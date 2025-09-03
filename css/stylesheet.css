@@ -1,0 +1,813 @@
+
+/* voor alle apparaten */
+
+* {
+  padding: 0;
+  margin: 0;
+}
+a {
+  text-decoration: none;
+  color: white;
+}
+/* icons color */
+i {
+  color: #42d8fd;
+}
+i .fa_search {
+  background-color: #621c7b;
+}
+
+main {
+  padding-left: 2%;
+  padding-right: 2%;
+}
+main i {
+  color: #e97211;
+}
+#logo_main img {
+  width: 35%;
+}
+
+header {
+  background-color: #621c7b;
+  height: 15vh;
+}
+#sub_nav {
+  display: block;
+}
+
+/* search button */
+
+.search-container button {
+  background-color: #621c7b;
+  border: none;
+}
+
+/* dashboard alle schermen */
+.dashboard_medewerker header a,
+.film_toevoegen header a,
+.filmsoverzicht header a,
+.filmInfo header a,
+.filmAanpassen header a {
+  color: aqua;
+}
+.dashboard_medewerker article,
+.dashboard_medewerker p {
+  margin: 10px;
+}
+#begroeting {
+  font-size: 22px;
+  color: orange;
+}
+
+/* backgournd imag voor alle de main */
+main {
+  padding: 5% 2% 5% 2%;
+  background-image: url("../img/backgroundhome.jpg");
+  background-size: cover;
+}
+/* film background */
+h1,
+h2 {
+  color: white;
+}
+
+#welkom_text {
+  background-color: black;
+  width: 100%;
+  color: white;
+  height: fit-content;
+  margin: 2% 0% 2% 0%;
+}
+#welkom_text p {
+  color: white;
+  padding: 50px;
+}
+
+#asterisk {
+  color: orange;
+}
+/* forms */
+.form_box main a {
+  color: white;
+  text-decoration: underline;
+}
+.form_box main a:hover {
+  color: aqua;
+}
+input {
+  width: 300px;
+  height: fit-content;
+}
+.form_box {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  justify-self: center;
+
+  height: 100%;
+
+  /* align-items: center; */
+  background-color: rgb(129, 10, 134);
+  padding: 20px;
+}
+main form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  justify-content: center;
+}
+
+main form label {
+  color: white;
+}
+
+#submit,
+#submitButton {
+  border: none;
+  color: blueviolet;
+  font-size: 1.5rem;
+}
+#submit:hover,
+#submitButton:hover {
+  background-color: aqua;
+  width: 310px;
+  color: white;
+  font-size: 1.6rem;
+}
+
+/* popup fout */
+#popup {
+  width: 200px;
+  height: auto;
+  padding: 10px;
+  background-color: orange;
+  position: absolute;
+  bottom: 4%;
+  right: 2%;
+  transform: translate(-10%, -10%);
+
+  display: none;
+}
+#popup p {
+  color: white;
+}
+#popup button {
+  padding: 5px;
+  background-color: blueviolet;
+  color: white;
+  margin: 5px;
+  border: none;
+  border-radius: 50%;
+  width: 40px;
+}
+#popup button:hover {
+  background-color: aqua;
+  color: blueviolet;
+  cursor: pointer;
+}
+
+/* popup goed */
+.dashboard_medewerker #popup {
+  background-color: green;
+}
+
+/* buttons filmInfo // alle biede buttons*/
+
+.filmInfo .buttons form button {
+  background-color: #621c7b;
+  border: none;
+  width: 120px;
+  height: 30px;
+  color: white;
+  margin-top: 30px;
+  font-size: 1rem;
+  cursor: pointer;
+}
+
+.filmInfo .buttons button:hover {
+  background-color: #e97211;
+}
+
+footer {
+  background-color: #621c7b;
+  padding: 10px;
+}
+
+#slide_show {
+  width: 70%;
+  height: 40vh;
+  justify-self: center;
+}
+
+/* filmInfo */
+.filmInfo #film_box h1,
+.MeerIfoFilm #film_box > article:nth-child(2) h1 {
+  color: aqua;
+  font-size: 1.5rem;
+}
+
+/* desktop */
+
+@media screen and (min-width: 1024px) {
+  body {
+    background-color: antiquewhite;
+  }
+
+  #logo img,
+  #logo_footer > img {
+    height: 15vh;
+  }
+  #icon_login img {
+    width: 90px;
+    height: 60px;
+  }
+
+  #icon_menu {
+    display: none;
+  }
+  header {
+    display: grid;
+    grid-template-rows: 1;
+
+    align-items: center;
+  }
+  #sub_nav {
+    width: 100%;
+    justify-content: space-around;
+  }
+  #sub_nav > a {
+    margin-left: 10px;
+  }
+
+  .search-container input {
+    width: 80%;
+  }
+
+  /* slide show */
+
+  .slide {
+    position: relative;
+  }
+  .slide a {
+    position: absolute; /* de ouder moet relative positon hebben anders gaat deze niet werken*/
+    top: 200px;
+    font-size: 2rem;
+  }
+
+  #slide_show {
+    /* background-color:; */
+
+    position: relative;
+  }
+  #slide_show > div:nth-child(1) {
+    display: block;
+  }
+  .slide {
+    /* om de fotos boven elkaar te zetten / de ouder slide show contanier heeft postion relative */
+    position: absolute;
+    display: none;
+  }
+  .slide h1 {
+    position: relative;
+    left: 10%;
+  }
+
+  .slide {
+    position: relative;
+    left: 13vw;
+    width: 90%;
+    height: 50vh;
+    bottom: 25vh;
+  }
+  .slide img {
+    width: 90%;
+    height: 50vh;
+  }
+  #welkom_text {
+    position: relative;
+    top: 10vh;
+  }
+
+  /* main film pagina  /// filmOverzciht pagian dezelfde layout en dezelfde id  */
+
+  #filteren_sorteren {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+    margin-top: 20px;
+  }
+
+  .films main img,
+  .filmsoverzicht .poster {
+    width: 300px;
+    height: 400px;
+  }
+  #films_Welcom_img {
+    width: 100%;
+    height: 400px;
+  }
+
+  #films_container {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+
+    gap: 5%;
+  }
+
+  /* film // films overzicht // tweede button */
+
+  .filmsoverzicht .buttons {
+    display: flex;
+    gap: 20%;
+  }
+
+  body {
+    background-color: black;
+
+    margin: 0;
+    padding: 0;
+  }
+
+  header {
+    background-color: #621c7b;
+    height: 15vh;
+    display: flex;
+  }
+  main {
+    background-color: black;
+    min-height: 40vh;
+    color: black;
+  }
+
+  .nav {
+    margin-top: 40px;
+    margin-left: 50px;
+    color: white;
+    text-decoration: none;
+    font-size: 2rem;
+  }
+
+  .mainborders {
+    margin-left: 5vw;
+    margin-right: 5vw;
+  }
+
+  .imguser {
+    position: relative;
+    left: 35vw;
+    height: 15vh;
+  }
+
+  #main-with-picture {
+    color: black;
+  }
+
+  /* medewerker dashboard / filmInfo pagina */
+  /* .filmInfo .poster{
+    width:100%;
+    height:400px;
+} */
+  .filmInfo #film_box,
+  .MeerIfoFilm #film_box {
+    display: flex;
+    justify-content: space-between;
+    gap: 30px;
+  }
+  .filmInfo #film_box .poster,
+  .MeerIfoFilm #film_box .poster {
+    width: 500px;
+    height: 70%;
+  }
+
+  .filmInfo iframe,
+  .MeerIfoFilm iframe {
+    width: 80%;
+    height: 350px;
+  }
+  .filmInfo #film_box > article:nth-child(2),
+  .MeerIfoFilm #film_box > article:nth-child(2) {
+    display: flex;
+    flex-direction: column;
+    row-gap: 5px;
+  }
+  .filmInfo #film_box h1,
+  .MeerIfoFilm #film_box h1 {
+    margin-top: 10px;
+  }
+
+  .filmInfo #film_box > article:nth-child(1) h1,
+  .MeerIfoFilm #film_box > article:nth-child(1) h1 {
+    font-size: 2rem;
+    color: orange;
+    margin-bottom: 10px;
+  }
+
+  /* footer style */
+  footer {
+    position: relative;
+    top: 40vh;
+    height: 35vh;
+    background-color: #621c7b;
+    display: flex;
+    object-position: bottom;
+    margin: 0;
+    padding: 0;
+  }
+
+  .footerarticle {
+    margin-left: 15vw;
+    margin-top: 5vh;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .logoimgfooter {
+    height: 20vh;
+  }
+  /* aboutusstyle */
+
+  #aboutusmain > article {
+    margin-left: 20vh;
+    margin-right: 20vh;
+  }
+
+  /* main film pagina */
+  .film_pagina main img {
+    width: 100%;
+    height: 300px;
+  }
+  #films_Welcom_img {
+    width: 100%;
+    height: 400px;
+  }
+
+  #main-with-picture2 > article {
+    margin-left: 20vw;
+    margin-right: 20vw;
+  }
+
+  /*  */
+  .inlog_pagina .form_box {
+    width: 400px;
+  }
+}
+
+/* Ipad */
+@media screen and (min-width: 768px) and (max-width: 1023px) {
+  /* body{
+        background-color: gray;
+    } */
+  #sub_nav {
+    justify-content: space-around;
+    align-items: center;
+    background-color: #a936d3;
+    width: 100%;
+    height: 85vh;
+    /* sub nav boven de header dan laat ik die 50 px  naar benden */
+    position: absolute;
+    top: 15vh;
+  }
+
+  #icon_menu i {
+    font-size: 40px;
+  }
+
+  #sub_nav a {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    /* afstand tussen ietms nav */
+    line-height: 80px;
+    font-size: 2rem;
+  }
+  #sub_nav a:hover {
+    font-size: 2.1rem;
+    color: rgb(0, 204, 255);
+  }
+
+  #logo > img,
+  #logo_footer > img {
+    width: 100px;
+    height: 50px;
+  }
+
+  header {
+    display: grid;
+    grid-template-rows: 1fr;
+    grid-template-columns: 15% 50% 10% 15%;
+    background-color: #621c7b;
+    justify-content: center;
+    align-items: center;
+  }
+  header img {
+    width: 100%;
+    height: 10vh;
+  }
+
+  #icon_login,
+  #icon_menu {
+    margin-top: 10px;
+  }
+  #icon_menu {
+    display: block;
+  }
+
+  /* slide show */
+
+  #slide_show {
+    display: none;
+  }
+
+  /* film pagina main */
+
+  /* hoofd img film pagina */
+  .films main img,
+  .filmsoverzicht .poster {
+    width: 300px;
+    height: 400px;
+  }
+
+  #filteren_sorteren {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+    margin-top: 20px;
+  }
+  #filter_container button,
+  #sorteren_container button {
+    width: 340px;
+    height: 80px;
+    margin-top: 20px;
+    background-color: #621c7b;
+    color: white;
+    border: none;
+    cursor: pointer;
+  }
+  /* filter icon */
+  #filter_container i,
+  #sorteren_container i {
+    font-size: 40px;
+  }
+  /* filter label woord */
+  #filter-icon,
+  #sorteren_icon {
+    font-size: 20px;
+  }
+
+  /* films */
+
+  #films_container {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+  }
+
+  /* medewerker dashboard / filmInfo pagina */
+  .filmInfo .poster,
+  .MeerIfoFilm .poster {
+    width: 600px;
+    height: 700px;
+  }
+  .filmInfo #film_box,
+  .MeerIfoFilm #film_box {
+    display: flex;
+    flex-direction: column;
+    row-gap: 50px;
+  }
+  .filmInfo #film_box > article:nth-child(2),
+  .MeerIfoFilm #film_box > article:nth-child(2) {
+    display: flex;
+    flex-direction: column;
+    row-gap: 5px;
+  }
+  .filmInfo #film_box h1,
+  .MeerIfoFilm #film_box h1 {
+    margin-top: 10px;
+  }
+
+  .filmInfo #film_box > article:nth-child(1) h1,
+  .MeerIfoFilm #film_box > article:nth-child(1) h1 {
+    font-size: 1.8rem;
+    color: orange;
+    margin-bottom: 10px;
+  }
+  .filmInfo iframe,
+  .MeerIfoFilm iframe {
+    width: 600px;
+    height: 400px;
+  }
+
+  /* films // filmOverzicht // tweede button */
+
+  /* footer
+     */
+
+  footer {
+    display: grid;
+    grid-template-rows: 1fr;
+    grid-template-columns: 30% 40% 30%;
+  }
+
+  footer > article:nth-child(3),
+  footer > article:nth-child(1) {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+  }
+  footer img {
+    width: 150px;
+  }
+}
+
+/* mobiel telefoon */
+@media screen and (max-width: 767px) {
+  #slide_show {
+    display: none;
+  }
+  #icon_login img,
+  #logo img,
+  #logo_footer img {
+    width: 80px;
+    height: 100%;
+  }
+
+  .footerarticle {
+    display: flex;
+    flex-direction: column;
+  }
+  .logoimgfooter {
+    width: 20vw;
+  }
+
+  #sub_nav {
+    justify-content: space-around;
+    align-items: center;
+    background-color: #a936d3;
+    width: 100%;
+    height: 85vh;
+    /* sub nav boven de header dan laat ik die 50 px  naar benden */
+    position: absolute;
+    top: 15vh;
+  }
+
+  #icon_menu i {
+    font-size: 40px;
+  }
+
+  #sub_nav a {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    /* afstand tussen ietms nav */
+    line-height: 80px;
+    font-size: 2rem;
+  }
+  #sub_nav a:hover {
+    font-size: 2.1rem;
+    color: rgb(0, 204, 255);
+  }
+
+  #logo > img,
+  #logo_footer > img {
+    width: 100px;
+    height: 50px;
+  }
+
+  /* gird area  header*/
+  header {
+    display: grid;
+    height: 25vh;
+    grid-template-areas: "logo . . menu_icon . log_icon " " search search search search search search ";
+    grid-gap: 10px;
+
+    background-color: #621c7b;
+
+    align-items: center;
+  }
+  #icon_menu {
+    display: block;
+  }
+
+  header > article:nth-child(1) {
+    grid-area: logo;
+  }
+  header > article:nth-child(2) {
+    grid-area: search;
+  }
+  header > article:nth-child(3) {
+    grid-area: menu_icon;
+  }
+  header > article:nth-child(5) {
+    grid-area: log_icon;
+  }
+
+  .search-container form input {
+    margin-left: 2%;
+    width: 80%;
+    height: 5vh;
+  }
+  .search-container button {
+    font-size: 20px;
+  }
+  /* gird area header tot hier */
+
+  /* film pagina   // overzicht pagina dezelfde layout en id*/
+  .films main,
+  .filmsoverzicht main {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .films main img,
+  .filmsoverzicht .poster {
+    width: 350px;
+    height: 500px;
+    margin-top: 60px;
+  }
+
+  /* films// overzicht pagian  // tweede button */
+
+  /* filter soorten  */
+
+  #sorteren_box,
+  #filter_box {
+    margin-top: 20px;
+  }
+
+  #sorteren_box {
+    display: flex;
+    gap: 10px;
+  }
+  #filteren_sorteren form,
+  #filteren_sorteren label,
+  #filteren_sorteren select {
+    color: white;
+  }
+  #filteren_sorteren select {
+    background-color: #42d8fd;
+    border: none;
+  }
+  #filteren_sorteren select > option:hover {
+    background-color: #a936d3;
+  }
+
+  /* inlog pagina */
+  .inlog_pagina .form_box {
+    width: 300px;
+  }
+
+  /* contact pagina */
+  #contact {
+    width: 100%;
+  }
+
+  /* medewerker dashboard / filmInfo pagina */
+  .filmInfo .poster,
+  .MeerIfoFilm .poster {
+    width: 100%;
+    height: 400px;
+  }
+  .filmInfo #film_box,
+  .MeerIfoFilm #film_box {
+    display: flex;
+    flex-direction: column;
+    row-gap: 50px;
+  }
+  .filmInfo #film_box > article:nth-child(2),
+  .MeerIfoFilm #film_box > article:nth-child(2) {
+    display: flex;
+    flex-direction: column;
+    row-gap: 5px;
+  }
+  .filmInfo #film_box h1,
+  .MeerIfoFilm #film_box h1 {
+    margin-top: 10px;
+  }
+
+  #film_box > article:nth-child(1) h1 {
+    font-size: 1.5rem;
+    color: orange;
+    margin-bottom: 10px;
+  }
+
+  .filmInfo iframe,
+  .MeerIfoFilm iframe {
+    width: 100%;
+    height: 300px;
+  }
+
+  footer {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+  }
+
+  /* alle rows in de footer */
+  footer article {
+    display: flex;
+    justify-content: space-around;
+    padding: 10px;
+  }
+}
