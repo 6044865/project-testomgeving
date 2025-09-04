@@ -15,7 +15,7 @@ class Klant extends Gebruiker
     {
 
         $username = $_POST["username"];
-        $wachtwoord_geb = $_POST["wachtwoord"];
+        $wachtwoord_geb = $_POST["password_hash"];
         $email = $_POST["email"];
 
 
@@ -25,7 +25,7 @@ class Klant extends Gebruiker
         $hashedpassword = password_hash($wachtwoord_geb, PASSWORD_BCRYPT, $option);
 
         try {
-            $query = "INSERT INTO klant (klant_naam, klant_email,klant_wachtwoord) VALUES (:username, :email_adres , :password)";
+            $query = "INSERT INTO users (klant_naam, klant_email,klant_wachtwoord) VALUES (:username, :email_adres , :password)";
 
             $statement =  $this->pdo->prepare($query);
 
@@ -60,7 +60,7 @@ class Klant extends Gebruiker
     {
 
         try {
-            $query = "SELECT*FROM klant WHERE klant_naam=:username";
+            $query = "SELECT*FROM users WHERE klant_naam=:username";
 
 
 

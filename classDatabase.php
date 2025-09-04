@@ -1,45 +1,38 @@
-<?php
+<?php 
+// niet absract calss want ik geen child classen gebuikt heb zoals onderzoekers ,beheerder... ict dat(rollen) saat in gebuikers table in my data base
+class Database {
 
-abstract class Database{
-
-    // connectie met database   / protected zodat de database connectie blijft beschremd en beveligd  
-    // en alleen binnen de calss en subclass wordt gebruikt..
     protected $pdo;
 
-    private $server ;
-    private $dbNaam ;
-    private $gebruiker ;
-    private $wachtwoord ;
-    
-    // binnen de construct intailize db
-    public function __construct(){
-    
-       
-        try{
-            // intialize data base 
-            $this->server  = "localhost" ;
-            $this->dbNaam  ="mbo_cinemas";
-            $this->gebruiker ="root";
-            $this->wachtwoord ="" ;
+    private $server;
+    private $dbNaam;
+    private $gebruiker;
+    private $wachtwoord;
 
-            $this->pdo = new PDO("mysql:host=$this->server;dbname=$this->dbNaam",$this->gebruiker,$this->wachtwoord);
-            $this->pdo->setAttribute(PDO::ATTR_ERRMODE,PDO::ERRMODE_EXCEPTION);
-            $this->pdo->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE,PDO::FETCH_BOTH);
+    public function __construct() {
+        try {
+            $this->server = "localhost";
+            $this->dbNaam = "wereldwonderen_db";  
+            $this->gebruiker = "root";
+            $this->wachtwoord = "";
 
-        }catch(PDOException $e){
-            $error = $e->getMessage();
-            
-            echo "Database verbinding is niet gelukt: ".$error;
+            $this->pdo = new PDO(
+                "mysql:host=$this->server;dbname=$this->dbNaam;charset=utf8mb4", 
+                $this->gebruiker,
+                $this->wachtwoord
+            );
+
+            $this->pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+            $this->pdo->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC); 
+
+        } catch (PDOException $e) {
+            die("❌ Database verbinding is niet gelukt: " . $e->getMessage()); 
         }
- 
     }
-
-    // deze functie moet in subclassen zijn zodat ik kan van de ene table naar de andere kan wisselen
-  
-
-
+    public function getConnection() {
+        return $this->pdo;
+    }
 }
-
 
 
 ?>
