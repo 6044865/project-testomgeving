@@ -74,6 +74,8 @@ geschiedenis op een kille kostschool aan de rand van Gouda, waar zijn stem net z
 als de klokken van de kerk naast het gebouw. Zijn lessen gingen zelden over jaartallen, ze 
 gingen over verhalen. Over macht, mystiek en beschavingen die rezen als zonnen en 
 ondergingen als sterren. 
+</p>
+<p>
 Zijn zoon, mijn grootvader Theodoor van Oort, reisde de wereld rond. In zijn klaslokaal 
 hingen tapijten uit Babylon, stenen uit Rome, en een stuk marmer waarvan hij zweerde dat 
 het ooit deel uitmaakte van de tempel van Artemis. Hij sprak zes talen, schreef in zeven, en 
@@ -84,16 +86,23 @@ achter zijn bril schuilde een vurige passie voor wat hij “de echo’s van besc
 Hij verzamelde alles over de zeven klassieke wereldwonderen, de zeven nieuwe en de zeven 
 natuurlijke wereldwonderen vond hij prachtig. Ook beweerde hij dat er overeenkomsten in 
 en patronen verborgen lagen in hun verhalen. Patronen die iets groters, iets gevaarlijkers 
-blootlegden. 
+blootlegden.
+</p> 
+<p>
 En dan ben ik er. Aurelius. Ik ben geen leraar. Geen avonturier. Geen archeoloog. 
 Ik ben een barista bij Starbucks. Maar net als hen ben ik opgegroeid met een fascinatie voor 
 het ontstaan en de ondergang van beschavingen. En al sinds mijn tiende verjaardag toen ik 
 van mijn vader een oud, leren boek kreeg over de 21 wereldwonderen, voel ik een 
 onverklaarbare drang om hun geheimen te ontrafelen. 
+</p>
+<p>
 Het Digitale Archief 
+</p>
+<p>
 De wereld verandert, en kennis moet mee veranderen. Terwijl de boeken van mijn 
 voorouders langzaam vergaan in dozen op zolder, besef ik: het is tijd om de erfenis te 
-digitaliseren. Te beveiligen. Te delen.</p>
+digitaliseren. Te beveiligen. Te delen.
+</p>
                     
             </article>
         </section>

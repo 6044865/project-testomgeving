@@ -4,14 +4,17 @@
   padding: 0;
   margin: 0;
 }
+
 a {
   text-decoration: none;
-  color: white;
+  color: #D9A299;
 }
+
 /* icons color */
 i {
   color: #42d8fd;
 }
+
 i .fa_search {
   background-color: #621c7b;
 }
@@ -20,9 +23,11 @@ main {
   padding-left: 2%;
   padding-right: 2%;
 }
+
 main i {
   color: #e97211;
 }
+
 #logo_main img {
   width: 35%;
 }
@@ -57,6 +62,7 @@ header {
   font-size: 2rem;
   color: white;
 }
+
 #sub_nav a:hover {
   font-size: 2.1rem;
   color: rgb(0, 204, 255);
@@ -77,10 +83,12 @@ header {
 .filmAanpassen header a {
   color: aqua;
 }
+
 .dashboard_medewerker article,
 .dashboard_medewerker p {
   margin: 10px;
 }
+
 #begroeting {
   font-size: 22px;
   color: orange;
@@ -92,10 +100,11 @@ main {
   background-image: url("../img/backgroundhome.jpg");
   background-size: cover;
 }
+
 /* film background */
 h1,
 h2 {
-  color: white;
+  color: #D9A299;
 }
 
 #welkom_text {
@@ -105,26 +114,31 @@ h2 {
   height: fit-content;
   margin: 2% 0% 2% 0%;
 }
+
 #welkom_text p {
   color: white;
-  padding: 50px;
+  padding: 10px 20px 10px 20px;
 }
 
 #asterisk {
   color: orange;
 }
+
 /* forms */
 .form_box main a {
   color: white;
   text-decoration: underline;
 }
+
 .form_box main a:hover {
   color: aqua;
 }
+
 input {
   width: 300px;
   height: fit-content;
 }
+
 .form_box {
   display: flex;
   flex-direction: column;
@@ -137,6 +151,7 @@ input {
   background-color: #DCC5B2;
   padding: 20px;
 }
+
 main form {
   display: flex;
   flex-direction: column;
@@ -154,6 +169,7 @@ main form label {
   color: #BF7D72;
   font-size: 1.5rem;
 }
+
 #submit:hover,
 #submitButton:hover {
   background-color: aqua;
@@ -175,9 +191,11 @@ main form label {
 
   display: none;
 }
+
 #popup p {
-  color: white;
+  color: #D9A299;
 }
+
 #popup button {
   padding: 5px;
   background-color: #BF7D72;
@@ -187,6 +205,7 @@ main form label {
   border-radius: 50%;
   width: 40px;
 }
+
 #popup button:hover {
   background-color: BF7D72;
   color: white;
@@ -218,6 +237,11 @@ main form label {
 footer {
   background-color: #B79274;
   padding: 10px;
+  color: white;
+}
+
+footer, h1, h2{
+  color:white
 }
 
 #slide_show {
@@ -228,7 +252,7 @@ footer {
 
 /* filmInfo */
 .filmInfo #film_box h1,
-.MeerIfoFilm #film_box > article:nth-child(2) h1 {
+.MeerIfoFilm #film_box>article:nth-child(2) h1 {
   color: aqua;
   font-size: 1.5rem;
 }
@@ -240,9 +264,10 @@ footer {
   }
 
   #logo img,
-  #logo_footer > img {
+  #logo_footer>img {
     height: 15vh;
   }
+
   #icon_login img {
     width: 90px;
     height: 60px;
@@ -251,6 +276,7 @@ footer {
   #icon_menu {
     display: none;
   }
+
   header {
     display: grid;
     grid-template-rows: 1;
@@ -267,7 +293,7 @@ footer {
     height: auto;
   }
 
-  #sub_nav > a {
+  #sub_nav>a {
     margin-left: 10px;
   }
 
@@ -279,6 +305,7 @@ footer {
   .slide {
     position: relative;
   }
+
   .slide a {
     position: absolute;
     top: 200px;
@@ -288,13 +315,16 @@ footer {
   #slide_show {
     position: relative;
   }
-  #slide_show > div:nth-child(1) {
+
+  #slide_show>div:nth-child(1) {
     display: block;
   }
+
   .slide {
     position: absolute;
     display: none;
   }
+
   .slide h1 {
     position: relative;
     left: 10%;
@@ -307,10 +337,12 @@ footer {
     height: 50vh;
     bottom: 25vh;
   }
+
   .slide img {
     width: 90%;
     height: 50vh;
   }
+
   #welkom_text {
     position: relative;
     top: 10vh;
@@ -329,6 +361,7 @@ footer {
     width: 300px;
     height: 400px;
   }
+
   #films_Welcom_img {
     width: 100%;
     height: 400px;
@@ -355,8 +388,9 @@ footer {
   header {
     background-color: #DCC5B2;
     height: 15vh;
-    display: flex;
+    
   }
+
   main {
     background-color: #FAF7F3;
     min-height: 40vh;
@@ -392,6 +426,7 @@ footer {
     justify-content: space-between;
     gap: 30px;
   }
+
   .filmInfo #film_box .poster,
   .MeerIfoFilm #film_box .poster {
     width: 500px;
@@ -403,19 +438,21 @@ footer {
     width: 80%;
     height: 350px;
   }
-  .filmInfo #film_box > article:nth-child(2),
-  .MeerIfoFilm #film_box > article:nth-child(2) {
+
+  .filmInfo #film_box>article:nth-child(2),
+  .MeerIfoFilm #film_box>article:nth-child(2) {
     display: flex;
     flex-direction: column;
     row-gap: 5px;
   }
+
   .filmInfo #film_box h1,
   .MeerIfoFilm #film_box h1 {
     margin-top: 10px;
   }
 
-  .filmInfo #film_box > article:nth-child(1) h1,
-  .MeerIfoFilm #film_box > article:nth-child(1) h1 {
+  .filmInfo #film_box>article:nth-child(1) h1,
+  .MeerIfoFilm #film_box>article:nth-child(1) h1 {
     font-size: 2rem;
     color: #D9A299;
     margin-bottom: 10px;
@@ -427,6 +464,7 @@ footer {
     top: 40vh;
     height: 35vh;
     background-color: #B79274;
+    color: white;
     display: flex;
     object-position: bottom;
     margin: 0;
@@ -443,8 +481,9 @@ footer {
   .logoimgfooter {
     height: 20vh;
   }
+
   /* aboutusstyle */
-  #aboutusmain > article {
+  #aboutusmain>article {
     margin-left: 20vh;
     margin-right: 20vh;
   }
@@ -454,12 +493,13 @@ footer {
     width: 100%;
     height: 300px;
   }
+
   #films_Welcom_img {
     width: 100%;
     height: 400px;
   }
 
-  #main-with-picture2 > article {
+  #main-with-picture2>article {
     margin-left: 20vw;
     margin-right: 20vw;
   }
@@ -475,8 +515,8 @@ footer {
     font-size: 40px;
   }
 
-  #logo > img,
-  #logo_footer > img {
+  #logo>img,
+  #logo_footer>img {
     width: 100px;
     height: 50px;
   }
@@ -489,6 +529,7 @@ footer {
     justify-content: center;
     align-items: center;
   }
+
   header img {
     width: 100%;
     height: 10vh;
@@ -498,6 +539,7 @@ footer {
   #icon_menu {
     margin-top: 10px;
   }
+
   #icon_menu {
     display: block;
   }
@@ -520,6 +562,7 @@ footer {
     margin-bottom: 20px;
     margin-top: 20px;
   }
+
   #filter_container button,
   #sorteren_container button {
     width: 340px;
@@ -530,10 +573,12 @@ footer {
     border: none;
     cursor: pointer;
   }
+
   #filter_container i,
   #sorteren_container i {
     font-size: 40px;
   }
+
   #filter-icon,
   #sorteren_icon {
     font-size: 20px;
@@ -550,29 +595,33 @@ footer {
     width: 600px;
     height: 700px;
   }
+
   .filmInfo #film_box,
   .MeerIfoFilm #film_box {
     display: flex;
     flex-direction: column;
     row-gap: 50px;
   }
-  .filmInfo #film_box > article:nth-child(2),
-  .MeerIfoFilm #film_box > article:nth-child(2) {
+
+  .filmInfo #film_box>article:nth-child(2),
+  .MeerIfoFilm #film_box>article:nth-child(2) {
     display: flex;
     flex-direction: column;
     row-gap: 5px;
   }
+
   .filmInfo #film_box h1,
   .MeerIfoFilm #film_box h1 {
     margin-top: 10px;
   }
 
-  .filmInfo #film_box > article:nth-child(1) h1,
-  .MeerIfoFilm #film_box > article:nth-child(1) h1 {
+  .filmInfo #film_box>article:nth-child(1) h1,
+  .MeerIfoFilm #film_box>article:nth-child(1) h1 {
     font-size: 1.8rem;
     color: orange;
     margin-bottom: 10px;
   }
+
   .filmInfo iframe,
   .MeerIfoFilm iframe {
     width: 600px;
@@ -585,13 +634,14 @@ footer {
     grid-template-columns: 30% 40% 30%;
   }
 
-  footer > article:nth-child(3),
-  footer > article:nth-child(1) {
+  footer>article:nth-child(3),
+  footer>article:nth-child(1) {
     display: flex;
     flex-direction: column;
     justify-content: space-around;
     align-items: center;
   }
+
   footer img {
     width: 150px;
   }
@@ -602,6 +652,7 @@ footer {
   #slide_show {
     display: none;
   }
+
   #icon_login img,
   #logo img,
   #logo_footer img {
@@ -613,6 +664,7 @@ footer {
     display: flex;
     flex-direction: column;
   }
+
   .logoimgfooter {
     width: 20vw;
   }
@@ -621,8 +673,8 @@ footer {
     font-size: 40px;
   }
 
-  #logo > img,
-  #logo_footer > img {
+  #logo>img,
+  #logo_footer>img {
     width: 100px;
     height: 50px;
   }
@@ -635,20 +687,24 @@ footer {
     background-color: #DCC5B2;
     align-items: center;
   }
+
   #icon_menu {
     display: block;
   }
 
-  header > article:nth-child(1) {
+  header>article:nth-child(1) {
     grid-area: logo;
   }
-  header > article:nth-child(2) {
+
+  header>article:nth-child(2) {
     grid-area: search;
   }
-  header > article:nth-child(3) {
+
+  header>article:nth-child(3) {
     grid-area: menu_icon;
   }
-  header > article:nth-child(5) {
+
+  header>article:nth-child(5) {
     grid-area: log_icon;
   }
 
@@ -657,6 +713,7 @@ footer {
     width: 80%;
     height: 5vh;
   }
+
   .search-container button {
     font-size: 20px;
   }
@@ -683,16 +740,19 @@ footer {
     display: flex;
     gap: 10px;
   }
+
   #filteren_sorteren form,
   #filteren_sorteren label,
   #filteren_sorteren select {
     color: white;
   }
+
   #filteren_sorteren select {
     background-color: #42d8fd;
     border: none;
   }
-  #filteren_sorteren select > option:hover {
+
+  #filteren_sorteren select>option:hover {
     background-color: #a936d3;
   }
 
@@ -709,24 +769,27 @@ footer {
     width: 100%;
     height: 400px;
   }
+
   .filmInfo #film_box,
   .MeerIfoFilm #film_box {
     display: flex;
     flex-direction: column;
     row-gap: 50px;
   }
-  .filmInfo #film_box > article:nth-child(2),
-  .MeerIfoFilm #film_box > article:nth-child(2) {
+
+  .filmInfo #film_box>article:nth-child(2),
+  .MeerIfoFilm #film_box>article:nth-child(2) {
     display: flex;
     flex-direction: column;
     row-gap: 5px;
   }
+
   .filmInfo #film_box h1,
   .MeerIfoFilm #film_box h1 {
     margin-top: 10px;
   }
 
-  #film_box > article:nth-child(1) h1 {
+  #film_box>article:nth-child(1) h1 {
     font-size: 1.5rem;
     color: orange;
     margin-bottom: 10px;
