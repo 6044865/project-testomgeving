@@ -35,8 +35,7 @@ $naam = $_SESSION['username'] ?? null;
     <nav id="sub_nav">
         <a href="index.php" class="nav_item">Home</a>
         <a href="wereldwonderen.php" class="nav_item">Wereldwonderen</a>
-        <a href="aboutus.php" class="nav_item">Over ons</a>
-        <a href="contact.php" class="nav_item">Contact</a>
+
 
         <?php if (in_array($rol, ["onderzoeker","redacteur","archivaris","beheerder"])): ?>
             <a href="toevoegen.php" class="nav_item">Toevoegen</a>
@@ -50,6 +49,11 @@ $naam = $_SESSION['username'] ?? null;
             <a href="gebuikersBeheren.php" class="nav_item">Gebruikersbeheer</a>
             <a href="dashboard.php" class="nav_item">Dashboard</a>
         <?php endif; ?>
+         <?php if ($rol === "bezoeker"): ?>
+            <a href="overons.php" class="nav_item">Over ons</a>
+        <a href="contact.php" class="nav_item">Contact</a>
+        <?php endif; ?>
+
     </nav>
 
     <article id="icon_login">
