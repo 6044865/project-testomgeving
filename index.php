@@ -69,13 +69,7 @@ $rol = $_SESSION['user_role'] ?? 'bezoeker'; // standaard bezoeker als niemand i
         <section id="welkom_text">
             <article>
                 <p>
-                    welkom<br>
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce interdum et nulla eu pretium. Sed id
-                    mauris pellentesque, aliquet lacus ut, porta velit. Class aptent taciti sociosqu ad litora torquent
-                    per conubia nostra, per inceptos himenaeos. Suspendisse ultricies luctus justo, sed efficitur dui
-                    congue sit amet. In hac habitasse platea dictumst. Proin facilisis vitae ante id tincidunt. Aenean
-                    mollis massa sit amet sagittis rhoncus. Fusce id nisi lacinia, sollicitudin arcu in, maximus est.
-                </p>
+                    
             </article>
         </section>
 
