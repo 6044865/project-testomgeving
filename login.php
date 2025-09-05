@@ -67,11 +67,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             <?php if (!empty($error)): ?>
                 <p style="color:red;"><?php echo $error; ?></p>
             <?php endif; ?>
-
+<!-- 
             <article>
-                <a href="registreren.php">Heb je nog geen account? Klik hier om te registreren.</a><br><br>
+              
                 <a href="#">Wachtwoord vergeten?</a><br><br>
-            </article>
+            </article> -->
         </section>
     </main>
 </body>
