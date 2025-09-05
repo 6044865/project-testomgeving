@@ -46,9 +46,9 @@ $naam = $_SESSION['username'] ?? null;
     <article id="icon_login">
         <?php if (!empty($_SESSION['isIngelogd'])): ?>
             <span class="welkom_naam">Welkom, <?php echo ucfirst($naam); ?></span>
-            <a href="logout.php"><img src="img/logout.png" alt="logout icon"></a>
+            <a href="logout.php"><img src="img/uitlog.png" alt="logout icon"></a>
         <?php else: ?>
-            <a href="login.php"><img src="img/user.png" alt="login icon"></a>
+            <a href="login.php"><img src="img/inlog.png" alt="login icon"></a>
         <?php endif; ?>
     </article>
 </header>
