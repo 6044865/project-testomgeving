@@ -5,50 +5,32 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>mbo_cinemas/home</title>
+    <title>wereldwonderen</title>
     <script src="https://kit.fontawesome.com/0c7c27ff53.js" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="./css/stylesheet.css">
-    <meta name="description"
-        content="mbocinemas is een bioscoop die veel films biedt, je kan een zaal huren of gewoon van een film kan genieten">
-    <meta name="keywords" content="mbocinemas, film, movies, bioscoop, bioscoopzaal huren, ">
+    <script src="../project-testomgeving/js/index.js" defer></script>
+  
+    <meta name="description" 
+      content="Codex Mundi is een digitaal archief van de 21 wereldwonderen. Ontdek informatie, foto's, verhalen en geschiedenis van de klassieke, nieuwe en natuurlijke wereldwonderen.">
+<meta name="keywords" 
+      content="wereldwonderen, 7 wereldwonderen, nieuwe wereldwonderen, klassieke wereldwonderen, geschiedenis, cultuur, Codex Mundi, digitaal archief, erfgoed">
+
+
+
     <meta name="author" content="A.Alhaji, G.Verpaalen">
 
 </head>
 
 <body class="home_pagina">
-    <header>
+   <?php
+session_start();
 
+// check rol
+$rol = $_SESSION['user_role'] ?? 'bezoeker'; // standaard bezoeker als niemand is ingelogd
+?>
 
+<?php include "./includes/header.php"; ?>
 
-        <article id="logo">
-            <a href="index.html"><img src="./img/logombocinemas.png" alt=""></a>
-        </article>
-
-
-
-        <article class="search-container">
-            <form action="#" method="post">
-                <input type="text" placeholder=" Search..." name="search">
-                <button type="submit"><i class="fa fa-search"></i></button>
-            </form>
-           
-        </article>
-        <article id="icon_menu">
-            <i class="fa fa-bars" aria-hidden="true"></i>
-        </article>
-        <nav id="sub_nav">
-            <a href="index.html" class="nav_item">Home</a>
-            <a href="films.php" class="nav_item">Wereld wonderen</a>
-
-            <!-- <a href="huren.html" class="nav_item">Zaal Huren</a> -->
-            <a href="aboutus.html" class="nav_item">over ons</a>
-            <a href="contact.html" class="nav_item">Contact</a>
-        </nav>
-        <article id="icon_login">
-            <a href="login.php"><img src="img/user.png"></i></a>
-        </article>
-
-    </header>
 
     <main>
         <section>
@@ -99,24 +81,8 @@
 
 
     </main>
-    <footer>
-        <article class="footerarticle">
-            <img class="logoimgfooter" src="img/logombocinemas.png" alt="logo van mbocinemas">
-        </article>
-        <article class="footerarticle">
-            <h2>Contact gegevens:</h2>
-            <h3>telefoonnummer</h3>
-            <p>06 123 45692</p>
-            <h3>emailadress:</h3>
-            <p>contact@mbocinemas.nl</p>
-        </article>
-        <article class="footerarticle">
-            <h2>Postadress:</h2>
-            <p>Betaplein 18</p>
-            <p>2321 KS Leiden</p>
-        </article>
+    <?php include "./includes/footer.php"; ?>
 
-    </footer>
     <script src="./js/main.js" defer></script>
     <script>
         // slide show

@@ -1,4 +1,3 @@
-
 /* voor alle apparaten */
 
 * {
@@ -32,8 +31,35 @@ header {
   background-color: #621c7b;
   height: 15vh;
 }
+
+/* ✅ MENU FIX: standaard verborgen */
 #sub_nav {
-  display: block;
+  display: none;
+  flex-direction: column;
+  background-color: #a936d3;
+  width: 100%;
+  height: 85vh;
+  position: absolute;
+  top: 15vh;
+  left: 0;
+  z-index: 999;
+}
+
+#sub_nav.active {
+  display: flex;
+}
+
+#sub_nav a {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  line-height: 80px;
+  font-size: 2rem;
+  color: white;
+}
+#sub_nav a:hover {
+  font-size: 2.1rem;
+  color: rgb(0, 204, 255);
 }
 
 /* search button */
@@ -208,7 +234,6 @@ footer {
 }
 
 /* desktop */
-
 @media screen and (min-width: 1024px) {
   body {
     background-color: antiquewhite;
@@ -229,13 +254,19 @@ footer {
   header {
     display: grid;
     grid-template-rows: 1;
-
     align-items: center;
   }
+
+  /* ✅ MENU FIX: desktop menu altijd zichtbaar */
   #sub_nav {
-    width: 100%;
+    display: flex !important;
+    position: static;
+    flex-direction: row;
     justify-content: space-around;
+    background: none;
+    height: auto;
   }
+
   #sub_nav > a {
     margin-left: 10px;
   }
@@ -245,26 +276,22 @@ footer {
   }
 
   /* slide show */
-
   .slide {
     position: relative;
   }
   .slide a {
-    position: absolute; /* de ouder moet relative positon hebben anders gaat deze niet werken*/
+    position: absolute;
     top: 200px;
     font-size: 2rem;
   }
 
   #slide_show {
-    /* background-color:; */
-
     position: relative;
   }
   #slide_show > div:nth-child(1) {
     display: block;
   }
   .slide {
-    /* om de fotos boven elkaar te zetten / de ouder slide show contanier heeft postion relative */
     position: absolute;
     display: none;
   }
@@ -290,7 +317,6 @@ footer {
   }
 
   /* main film pagina  /// filmOverzciht pagian dezelfde layout en dezelfde id  */
-
   #filteren_sorteren {
     display: flex;
     justify-content: space-between;
@@ -311,12 +337,10 @@ footer {
   #films_container {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-
     gap: 5%;
   }
 
   /* film // films overzicht // tweede button */
-
   .filmsoverzicht .buttons {
     display: flex;
     gap: 20%;
@@ -324,7 +348,6 @@ footer {
 
   body {
     background-color: black;
-
     margin: 0;
     padding: 0;
   }
@@ -363,11 +386,6 @@ footer {
     color: black;
   }
 
-  /* medewerker dashboard / filmInfo pagina */
-  /* .filmInfo .poster{
-    width:100%;
-    height:400px;
-} */
   .filmInfo #film_box,
   .MeerIfoFilm #film_box {
     display: flex;
@@ -426,7 +444,6 @@ footer {
     height: 20vh;
   }
   /* aboutusstyle */
-
   #aboutusmain > article {
     margin-left: 20vh;
     margin-right: 20vh;
@@ -447,7 +464,6 @@ footer {
     margin-right: 20vw;
   }
 
-  /*  */
   .inlog_pagina .form_box {
     width: 400px;
   }
@@ -455,35 +471,8 @@ footer {
 
 /* Ipad */
 @media screen and (min-width: 768px) and (max-width: 1023px) {
-  /* body{
-        background-color: gray;
-    } */
-  #sub_nav {
-    justify-content: space-around;
-    align-items: center;
-    background-color: #a936d3;
-    width: 100%;
-    height: 85vh;
-    /* sub nav boven de header dan laat ik die 50 px  naar benden */
-    position: absolute;
-    top: 15vh;
-  }
-
   #icon_menu i {
     font-size: 40px;
-  }
-
-  #sub_nav a {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    /* afstand tussen ietms nav */
-    line-height: 80px;
-    font-size: 2rem;
-  }
-  #sub_nav a:hover {
-    font-size: 2.1rem;
-    color: rgb(0, 204, 255);
   }
 
   #logo > img,
@@ -514,14 +503,11 @@ footer {
   }
 
   /* slide show */
-
   #slide_show {
     display: none;
   }
 
   /* film pagina main */
-
-  /* hoofd img film pagina */
   .films main img,
   .filmsoverzicht .poster {
     width: 300px;
@@ -544,18 +530,14 @@ footer {
     border: none;
     cursor: pointer;
   }
-  /* filter icon */
   #filter_container i,
   #sorteren_container i {
     font-size: 40px;
   }
-  /* filter label woord */
   #filter-icon,
   #sorteren_icon {
     font-size: 20px;
   }
-
-  /* films */
 
   #films_container {
     display: grid;
@@ -563,7 +545,6 @@ footer {
     gap: 20px;
   }
 
-  /* medewerker dashboard / filmInfo pagina */
   .filmInfo .poster,
   .MeerIfoFilm .poster {
     width: 600px;
@@ -597,11 +578,6 @@ footer {
     width: 600px;
     height: 400px;
   }
-
-  /* films // filmOverzicht // tweede button */
-
-  /* footer
-     */
 
   footer {
     display: grid;
@@ -641,32 +617,8 @@ footer {
     width: 20vw;
   }
 
-  #sub_nav {
-    justify-content: space-around;
-    align-items: center;
-    background-color: #a936d3;
-    width: 100%;
-    height: 85vh;
-    /* sub nav boven de header dan laat ik die 50 px  naar benden */
-    position: absolute;
-    top: 15vh;
-  }
-
   #icon_menu i {
     font-size: 40px;
-  }
-
-  #sub_nav a {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    /* afstand tussen ietms nav */
-    line-height: 80px;
-    font-size: 2rem;
-  }
-  #sub_nav a:hover {
-    font-size: 2.1rem;
-    color: rgb(0, 204, 255);
   }
 
   #logo > img,
@@ -675,15 +627,12 @@ footer {
     height: 50px;
   }
 
-  /* gird area  header*/
   header {
     display: grid;
     height: 25vh;
     grid-template-areas: "logo . . menu_icon . log_icon " " search search search search search search ";
     grid-gap: 10px;
-
     background-color: #621c7b;
-
     align-items: center;
   }
   #icon_menu {
@@ -711,9 +660,7 @@ footer {
   .search-container button {
     font-size: 20px;
   }
-  /* gird area header tot hier */
 
-  /* film pagina   // overzicht pagina dezelfde layout en id*/
   .films main,
   .filmsoverzicht main {
     display: flex;
@@ -726,10 +673,6 @@ footer {
     height: 500px;
     margin-top: 60px;
   }
-
-  /* films// overzicht pagian  // tweede button */
-
-  /* filter soorten  */
 
   #sorteren_box,
   #filter_box {
@@ -753,17 +696,14 @@ footer {
     background-color: #a936d3;
   }
 
-  /* inlog pagina */
   .inlog_pagina .form_box {
     width: 300px;
   }
 
-  /* contact pagina */
   #contact {
     width: 100%;
   }
 
-  /* medewerker dashboard / filmInfo pagina */
   .filmInfo .poster,
   .MeerIfoFilm .poster {
     width: 100%;
@@ -804,7 +744,6 @@ footer {
     justify-content: space-evenly;
   }
 
-  /* alle rows in de footer */
   footer article {
     display: flex;
     justify-content: space-around;
