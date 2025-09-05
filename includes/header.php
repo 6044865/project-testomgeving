@@ -13,12 +13,12 @@ $naam = $_SESSION['username'] ?? null;
         <a href="index.php"><img src="./img/wereldwonderen.png" alt="Logo wereldwonderen"></a>
     </article>
 
-    <article class="search-container">
+    <!-- <article class="search-container">
         <form action="#" method="post">
             <input type="text" placeholder=" Search..." name="search">
             <button type="submit"><i class="fa fa-search"></i></button>
         </form>
-    </article>
+    </article> -->
 
     <article id="icon_menu">
         <i class="fa fa-bars" aria-hidden="true"></i>
@@ -46,10 +46,10 @@ $naam = $_SESSION['username'] ?? null;
 
     <article id="icon_login">
         <?php if (!empty($_SESSION['isIngelogd'])): ?>
-            <a><span class="welkom_naam" style="color:aqua"> <?php echo ucfirst($naam); ?></span></a>
+            <span class="welkom_naam">Welkom, <?php echo ucfirst($naam); ?></span>
             <a href="logout.php"><img src="img/logout.png" alt="logout icon"></a>
         <?php else: ?>
-            <a href="login.php"><img src="img/user.png" alt="login icon"></a>
+            <a href="login.php"><img src="img/inlog.png" alt="login icon"></a>
         <?php endif; ?>
     </article>
 </header>

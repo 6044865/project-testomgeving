@@ -28,7 +28,7 @@ main i {
 }
 
 header {
-  background-color: #621c7b;
+  background-color: #DCC5B2;
   height: 15vh;
 }
 
@@ -36,7 +36,7 @@ header {
 #sub_nav {
   display: none;
   flex-direction: column;
-  background-color: #a936d3;
+  background-color: #DCC5B2;
   width: 100%;
   height: 85vh;
   position: absolute;
@@ -63,12 +63,12 @@ header {
 }
 
 /* search button */
-
+/*  
 .search-container button {
   background-color: #621c7b;
   border: none;
 }
-
+*/
 /* dashboard alle schermen */
 .dashboard_medewerker header a,
 .film_toevoegen header a,
@@ -134,7 +134,7 @@ input {
   height: 100%;
 
   /* align-items: center; */
-  background-color: rgb(129, 10, 134);
+  background-color: #DCC5B2;
   padding: 20px;
 }
 main form {
@@ -151,7 +151,7 @@ main form label {
 #submit,
 #submitButton {
   border: none;
-  color: blueviolet;
+  color: #BF7D72;
   font-size: 1.5rem;
 }
 #submit:hover,
@@ -180,7 +180,7 @@ main form label {
 }
 #popup button {
   padding: 5px;
-  background-color: blueviolet;
+  background-color: #BF7D72;
   color: white;
   margin: 5px;
   border: none;
@@ -188,20 +188,20 @@ main form label {
   width: 40px;
 }
 #popup button:hover {
-  background-color: aqua;
-  color: blueviolet;
+  background-color: BF7D72;
+  color: white;
   cursor: pointer;
 }
 
 /* popup goed */
 .dashboard_medewerker #popup {
-  background-color: green;
+  background-color: #FAF7F3;
 }
 
 /* buttons filmInfo // alle biede buttons*/
 
 .filmInfo .buttons form button {
-  background-color: #621c7b;
+  background-color: #BF7D72;
   border: none;
   width: 120px;
   height: 30px;
@@ -216,7 +216,7 @@ main form label {
 }
 
 footer {
-  background-color: #621c7b;
+  background-color: #B79274;
   padding: 10px;
 }
 
@@ -236,7 +236,7 @@ footer {
 /* desktop */
 @media screen and (min-width: 1024px) {
   body {
-    background-color: antiquewhite;
+    background-color: #FAF7F3;
   }
 
   #logo img,
@@ -347,20 +347,20 @@ footer {
   }
 
   body {
-    background-color: black;
+    background-color: #FAF7F3;
     margin: 0;
     padding: 0;
   }
 
   header {
-    background-color: #621c7b;
+    background-color: #DCC5B2;
     height: 15vh;
     display: flex;
   }
   main {
-    background-color: black;
+    background-color: #FAF7F3;
     min-height: 40vh;
-    color: black;
+    color: #D9A299;
   }
 
   .nav {
@@ -383,7 +383,7 @@ footer {
   }
 
   #main-with-picture {
-    color: black;
+    color: #D9A299;
   }
 
   .filmInfo #film_box,
@@ -417,7 +417,7 @@ footer {
   .filmInfo #film_box > article:nth-child(1) h1,
   .MeerIfoFilm #film_box > article:nth-child(1) h1 {
     font-size: 2rem;
-    color: orange;
+    color: #D9A299;
     margin-bottom: 10px;
   }
 
@@ -426,7 +426,7 @@ footer {
     position: relative;
     top: 40vh;
     height: 35vh;
-    background-color: #621c7b;
+    background-color: #B79274;
     display: flex;
     object-position: bottom;
     margin: 0;
@@ -485,7 +485,7 @@ footer {
     display: grid;
     grid-template-rows: 1fr;
     grid-template-columns: 15% 50% 10% 15%;
-    background-color: #621c7b;
+    background-color: #DCC5B2;
     justify-content: center;
     align-items: center;
   }
@@ -525,7 +525,7 @@ footer {
     width: 340px;
     height: 80px;
     margin-top: 20px;
-    background-color: #621c7b;
+    background-color: #BF7D72;
     color: white;
     border: none;
     cursor: pointer;
@@ -632,7 +632,7 @@ footer {
     height: 25vh;
     grid-template-areas: "logo . . menu_icon . log_icon " " search search search search search search ";
     grid-gap: 10px;
-    background-color: #621c7b;
+    background-color: #DCC5B2;
     align-items: center;
   }
   #icon_menu {
