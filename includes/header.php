@@ -34,7 +34,7 @@ $naam = $_SESSION['username'] ?? null;
 
     <nav id="sub_nav">
         <a href="index.php" class="nav_item">Home</a>
-        <a href="films.php" class="nav_item">Wereldwonderen</a>
+        <a href="wereldwonderen.php" class="nav_item">Wereldwonderen</a>
         <a href="aboutus.php" class="nav_item">Over ons</a>
         <a href="contact.php" class="nav_item">Contact</a>
 
