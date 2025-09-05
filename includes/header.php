@@ -1,4 +1,12 @@
 <?php
+// if (session_status() === PHP_SESSION_NONE) {
+//     session_start();
+// }
+
+// $rol  = $_SESSION['user_role'] ?? 'bezoeker';
+// $naam = $_SESSION['username'] ?? null;
+
+
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }

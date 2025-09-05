@@ -1,10 +1,15 @@
 <?php
 // includes/auth.php
-session_start();
 
-// ik wil hier controleren of de gebuiker is ingelogd anderes wordt hij doorgestuurd naar inlog pagina
+// includes/auth.php
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+
+// controleren of gebruiker is ingelogd
 if (!isset($_SESSION['isIngelogd']) || $_SESSION['isIngelogd'] !== true) {
     header("Location: ../login.php");
     exit;
 }
+
 ?>

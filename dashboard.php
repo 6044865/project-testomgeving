@@ -1,4 +1,10 @@
 
+<?php
+require_once "./includes/auth.php";
+
+$rol  = $_SESSION['user_role'] ?? 'bezoeker';
+$naam = $_SESSION['username'] ?? 'Gast';
+?>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -28,12 +34,6 @@
 <main>
     
 
-<?php
-require_once "./includes/auth.php";
-
-$rol  = $_SESSION['user_role'] ?? 'bezoeker';
-$naam = $_SESSION['username'] ?? 'Gast';
-?>
 
 <h1>Welkom op je dashboard, <?php echo ucfirst($naam); ?>! (<?php echo ucfirst($rol); ?>)</h1>
 
