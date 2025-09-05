@@ -68,7 +68,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 }
 ?>
 
-<?php include "header.php"; ?>
+<?php include "./includes/header.php"; ?>
 
 <main style="width:60%;margin:30px auto;">
     <h2>Gebruiker bewerken</h2>
@@ -100,4 +100,4 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     </form>
 </main>
 
-<?php include "footer.php"; ?>
+<?php include "./includes/footer.php"; ?>
