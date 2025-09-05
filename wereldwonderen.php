@@ -1,170 +1,44 @@
-
-
-<<<<<<< HEAD
-
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>wereldwonderen</title>
-    <script src="https://kit.fontawesome.com/0c7c27ff53.js" crossorigin="anonymous"></script>
-    <link rel="stylesheet" href="./css/stylesheet.css">
-    <script src="../project-testomgeving/js/index.js" defer></script>
-  
-    <meta name="description" 
-      content="Codex Mundi is een digitaal archief van de 21 wereldwonderen. Ontdek informatie, foto's, verhalen en geschiedenis van de klassieke, nieuwe en natuurlijke wereldwonderen.">
-<meta name="keywords" 
-      content="wereldwonderen, 7 wereldwonderen, nieuwe wereldwonderen, klassieke wereldwonderen, geschiedenis, cultuur, Codex Mundi, digitaal archief, erfgoed">
-
-
-
-    <meta name="author" content="A.Alhaji, G.Verpaalen">
-
-</head>
-
-<body class="home_pagina">
-   <?php
-session_start();
-
-// check rol
-$rol = $_SESSION['user_role'] ?? 'bezoeker'; // standaard bezoeker als niemand is ingelogd
-?>
-
-<?php include "./includes/header.php"; ?>
-
-
-    <main>
-       
-<form method="GET" action="">
-    <label for="tag">Filter op tag:</label>
-    <select name="tag" id="tag" onchange="this.form.submit()">
-    <option value=""></option>
-  <option value="Antiek">Antiek</option>
-  <option value="Modern">modern</option>
-  <option value="UNESCO">UNESCO</option>
-  <option value="Bestaat">bestaat</option>
-  <option value="Verwoest">Verwoest</option>
-  <option value="Wereldeel">Wereldeel</option>
-</select>
-
- </select>
-</form>
-   
-
-          
-       
-     
-
-
-    </main>
-    <?php include "./includes/footer.php"; ?>
-
-    <script src="./js/main.js" defer></script>
-    <script>
-        // slide show
-
-        let slidesArray = document.getElementsByClassName("slide");
-        let index = 0;
-
-        setInterval(slideShow, 1800)
-        function slideShow() {
-            //    veberg de huidige slide
-            slidesArray[index].style.display = "none";
-            index++;
-
-            if (index >= slidesArray.length) {
-                index = 0;
-            }
-            slidesArray[index].style.display = "block";
-        }
-    </script>
-</body>
-
-</html>
-
-<?php
-// Verbinden met database
-$host = "localhost";
-$user = "root";   // pas aan
-$pass = "";       // pas aan
-$dbname = "wereldwonderen_db";
-
-$conn = new mysqli($host, $user, $pass, $dbname);
-
-if ($conn->connect_error) {
-    die("Verbinding mislukt: " . $conn->connect_error);
-}
-
-// Ophalen geselecteerde tag
-$tag = isset($_GET['tag']) ? $_GET['tag'] : "";
-
-// Query maken
-if ($tag) {
-    $stmt = $conn->prepare("SELECT * FROM wereldwonderen WHERE tag = ?");
-    $stmt->bind_param("s", $tag);
-} else {
-    $stmt = $conn->prepare("SELECT * FROM wereldwonderen");
-}
-
-$stmt->execute();
-$result = $stmt->get_result();
-
-// Resultaten tonen
-echo "<ul>";
-while ($row = $result->fetch_assoc()) {
-    echo "<li>" . htmlspecialchars($row['naam']) . " (" . htmlspecialchars($row['tag']) . ")</li>";
-}
-echo "</ul>";
-
-$stmt->close();
-$conn->close();
-?>
-=======
 <?php
 require_once "classDatabase.php";
+
 $db = new Database();
 $conn = $db->getConnection();
 
-// Zoek, filter en sorteer parameters ophalen
-$zoekterm = $_GET['zoekterm'] ?? '';
-$type     = $_GET['type'] ?? '';
+// Parameters ophalen uit GET
+$zoekterm   = $_GET['zoekterm'] ?? '';
+$type       = $_GET['type'] ?? '';
 $werelddeel = $_GET['werelddeel'] ?? '';
-$sorteren = $_GET['sorteren'] ?? 'naam';
+$status     = $_GET['status'] ?? '';
+$sorteren   = $_GET['sorteren'] ?? 'naam';
 
-// Basis query
-$query = "SELECT * FROM wereldwonderen WHERE 1=1";
+// Basisquery
+$query = "SELECT w.*, 
+                 MIN(f.bestandspad) AS foto 
+          FROM wereldwonderen w
+          LEFT JOIN fotos f ON f.wonder_id = w.wonder_id AND f.goedgekeurd = 1
+          WHERE 1=1";
 
 // Zoekterm
 if (!empty($zoekterm)) {
-    $query .= " AND naam LIKE :zoekterm";
+    $query .= " AND w.naam LIKE :zoekterm";
 }
+// Filters
+if (!empty($type))       $query .= " AND w.type = :type";
+if (!empty($werelddeel)) $query .= " AND w.werelddeel = :werelddeel";
+if (!empty($status))     $query .= " AND w.status = :status";
 
-// Filter op type
-if (!empty($type)) {
-    $query .= " AND type = :type";
-}
-
-// Filter op werelddeel
-if (!empty($werelddeel)) {
-    $query .= " AND werelddeel = :werelddeel";
-}
-
-// Sorteren
+// Sorteren (alleen veilige kolommen)
 $toegestaneSorts = ['naam','bouwjaar','aangemaakt_op'];
-if (!in_array($sorteren, $toegestaneSorts)) {
-    $sorteren = 'naam';
-}
-$query .= " ORDER BY $sorteren ASC";
+if (!in_array($sorteren, $toegestaneSorts)) $sorteren = 'naam';
+$query .= " GROUP BY w.wonder_id ORDER BY w.$sorteren ASC";
 
-// Statement voorbereiden
 $stmt = $conn->prepare($query);
 
 // Parameters binden
-if (!empty($zoekterm)) $stmt->bindValue(':zoekterm', "%$zoekterm%");
-if (!empty($type)) $stmt->bindValue(':type', $type);
+if (!empty($zoekterm))   $stmt->bindValue(':zoekterm', "%$zoekterm%");
+if (!empty($type))       $stmt->bindValue(':type', $type);
 if (!empty($werelddeel)) $stmt->bindValue(':werelddeel', $werelddeel);
+if (!empty($status))     $stmt->bindValue(':status', $status);
 
 $stmt->execute();
 $wonderen = $stmt->fetchAll();
@@ -173,14 +47,58 @@ $wonderen = $stmt->fetchAll();
 <html lang="nl">
 <head>
     <meta charset="UTF-8">
-    <title>Wereldwonderen Overzicht</title>
+    <title>Wereldwonderen</title>
     <link rel="stylesheet" href="./css/stylesheet.css">
+    <style>
+        .filter_form {
+            margin: 20px auto;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            justify-content: center;
+        }
+        .filter_form input, .filter_form select, .filter_form button {
+            padding: 6px;
+        }
+        .wonderen_grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill,minmax(250px,1fr));
+            gap: 20px;
+            margin-top: 30px;
+        }
+        .wonder_card {
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            overflow: hidden;
+            text-align: center;
+            background: #fafafa;
+            transition: 0.2s;
+        }
+        .wonder_card:hover {
+            transform: scale(1.03);
+            box-shadow: 0 0 10px rgba(0,0,0,0.2);
+        }
+        .wonder_card img {
+            width: 100%;
+            height: 180px;
+            object-fit: cover;
+        }
+        .wonder_card h2 {
+            margin: 10px 0;
+            font-size: 18px;
+        }
+        .no-results {
+            text-align: center;
+            color: #777;
+            margin-top: 40px;
+        }
+    </style>
 </head>
 <body>
 <?php include "./includes/header.php"; ?>
 
-<main>
-    <h1>Overzicht Wereldwonderen</h1>
+<main class="pagina">
+    <h1 style="text-align:center;">Wereldwonderen</h1>
 
     <!-- Zoek- en filterformulier -->
     <form method="get" action="wereldwonderen.php" class="filter_form">
@@ -188,46 +106,54 @@ $wonderen = $stmt->fetchAll();
 
         <select name="type">
             <option value="">-- Type --</option>
-            <option value="klassiek" <?= $type==='klassiek'?'selected':'' ?>>Klassiek</option>
-            <option value="nieuw" <?= $type==='nieuw'?'selected':'' ?>>Nieuw</option>
+            <option value="klassiek"   <?= $type==='klassiek'?'selected':'' ?>>Klassiek</option>
+            <option value="modern"     <?= $type==='modern'?'selected':'' ?>>Modern</option>
             <option value="natuurlijk" <?= $type==='natuurlijk'?'selected':'' ?>>Natuurlijk</option>
         </select>
 
         <select name="werelddeel">
             <option value="">-- Werelddeel --</option>
-            <option value="Europa" <?= $werelddeel==='Europa'?'selected':'' ?>>Europa</option>
-            <option value="Azië" <?= $werelddeel==='Azië'?'selected':'' ?>>Azië</option>
             <option value="Afrika" <?= $werelddeel==='Afrika'?'selected':'' ?>>Afrika</option>
-            <option value="Zuid-Amerika" <?= $werelddeel==='Zuid-Amerika'?'selected':'' ?>>Zuid-Amerika</option>
+            <option value="Azië" <?= $werelddeel==='Azië'?'selected':'' ?>>Azië</option>
+            <option value="Europa" <?= $werelddeel==='Europa'?'selected':'' ?>>Europa</option>
             <option value="Noord-Amerika" <?= $werelddeel==='Noord-Amerika'?'selected':'' ?>>Noord-Amerika</option>
+            <option value="Zuid-Amerika" <?= $werelddeel==='Zuid-Amerika'?'selected':'' ?>>Zuid-Amerika</option>
+            <option value="Oceanië" <?= $werelddeel==='Oceanië'?'selected':'' ?>>Oceanië</option>
+        </select>
+
+        <select name="status">
+            <option value="">-- Status --</option>
+            <option value="UNESCO Werelderfgoed" <?= $status==='UNESCO Werelderfgoed'?'selected':'' ?>>UNESCO</option>
+            <option value="Herbouwd" <?= $status==='Herbouwd'?'selected':'' ?>>Herbouwd</option>
+            <option value="Mythisch" <?= $status==='Mythisch'?'selected':'' ?>>Mythisch</option>
         </select>
 
         <select name="sorteren">
-            <option value="naam" <?= $sorteren==='naam'?'selected':'' ?>>Sorteer op naam</option>
-            <option value="bouwjaar" <?= $sorteren==='bouwjaar'?'selected':'' ?>>Sorteer op bouwjaar</option>
-            <option value="aangemaakt_op" <?= $sorteren==='aangemaakt_op'?'selected':'' ?>>Sorteer op datum toegevoegd</option>
+            <option value="naam" <?= $sorteren==='naam'?'selected':'' ?>>Naam</option>
+            <option value="bouwjaar" <?= $sorteren==='bouwjaar'?'selected':'' ?>>Bouwjaar</option>
+            <option value="aangemaakt_op" <?= $sorteren==='aangemaakt_op'?'selected':'' ?>>Toegevoegd</option>
         </select>
 
-        <button type="submit">Zoeken</button>
+        <button type="submit">Filter</button>
     </form>
 
-    <!-- Resultaten tonen -->
-    <section class="wonderen_list">
-        <?php if (count($wonderen) > 0): ?>
+    <!-- Resultaten -->
+    <section class="wonderen_grid">
+        <?php if ($wonderen): ?>
             <?php foreach ($wonderen as $w): ?>
                 <article class="wonder_card">
-                    <?php if (!empty($w['afbeelding'])): ?>
-                        <img src="uploads/<?= htmlspecialchars($w['afbeelding']) ?>" alt="<?= htmlspecialchars($w['naam']) ?>">
-                    <?php endif; ?>
-                    <h2><?= htmlspecialchars($w['naam']) ?></h2>
-                    <p><strong>Type:</strong> <?= ucfirst($w['type']) ?></p>
-                    <p><strong>Werelddeel:</strong> <?= htmlspecialchars($w['werelddeel']) ?></p>
-                    <p><strong>Bouwjaar:</strong> <?= $w['bouwjaar'] ?? 'Onbekend' ?></p>
-                    <p><?= substr(htmlspecialchars($w['beschrijving']), 0, 150) ?>...</p>
+                    <a href="wonder.php?id=<?= $w['wonder_id'] ?>">
+                        <?php if (!empty($w['foto'])): ?>
+                            <img src="uploads/<?= htmlspecialchars($w['foto']) ?>" alt="<?= htmlspecialchars($w['naam']) ?>">
+                        <?php else: ?>
+                            <img src="img/no-image.png" alt="Geen afbeelding">
+                        <?php endif; ?>
+                        <h2><?= htmlspecialchars($w['naam']) ?></h2>
+                    </a>
                 </article>
             <?php endforeach; ?>
         <?php else: ?>
-            <p>Geen wereldwonderen gevonden.</p>
+            <p class="no-results">Geen wereldwonderen gevonden.</p>
         <?php endif; ?>
     </section>
 </main>
