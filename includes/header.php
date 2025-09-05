@@ -13,12 +13,12 @@ $naam = $_SESSION['username'] ?? null;
         <a href="index.php"><img src="./img/wereldwonderen.png" alt="Logo wereldwonderen"></a>
     </article>
 
-    <article class="search-container">
+    <!-- <article class="search-container">
         <form action="#" method="post">
             <input type="text" placeholder=" Search..." name="search">
             <button type="submit"><i class="fa fa-search"></i></button>
         </form>
-    </article>
+    </article> -->
 
     <article id="icon_menu">
         <i class="fa fa-bars" aria-hidden="true"></i>
