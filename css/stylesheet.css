@@ -59,7 +59,7 @@ header {
   flex-direction: column;
   align-items: center;
   line-height: 80px;
-  font-size: 2rem;
+  font-size: 1.5rem;
   color: white;
 }
 
@@ -277,11 +277,16 @@ footer, h1, h2{
     display: none;
   }
 
-  header {
-    display: grid;
-    grid-template-rows: 1;
+header {
+    display: flex !important;
+    justify-content: space-between;
     align-items: center;
+    height: 15vh;
+    background-color: #DCC5B2;
+    
   }
+
+  
 
   /* ✅ MENU FIX: desktop menu altijd zichtbaar */
   #sub_nav {
@@ -388,7 +393,7 @@ footer, h1, h2{
   header {
     background-color: #DCC5B2;
     height: 15vh;
-    
+    display: flex;
   }
 
   main {
@@ -529,6 +534,14 @@ footer, h1, h2{
     justify-content: center;
     align-items: center;
   }
+  header {
+    display: flex !important;
+    justify-content: space-between;
+    align-items: center;
+    height: 15vh;
+    background-color: #DCC5B2;
+    font-size: 2rem !important;
+  }
 
   header img {
     width: 100%;
@@ -651,6 +664,23 @@ footer, h1, h2{
 @media screen and (max-width: 767px) {
   #slide_show {
     display: none;
+  }
+  header {
+    display: flex !important;
+    justify-content: space-between;
+    align-items: center;
+    height: 15vh;
+    background-color: #DCC5B2;
+    font-size: 2rem !important;
+  }
+
+  header {
+    display: flex !important;
+    justify-content: space-between;
+    align-items: center;
+    height: 15vh;
+    background-color: #DCC5B2;
+    font-size: 2rem !important;
   }
 
   #icon_login img,
