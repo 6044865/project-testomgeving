@@ -1,5 +1,5 @@
 <?php
-session_start();
+
 require_once "classDatabase.php";
 include "./includes/auth.php";
 
