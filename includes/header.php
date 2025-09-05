@@ -39,13 +39,14 @@ $naam = $_SESSION['username'] ?? null;
         <?php endif; ?>
 
         <?php if ($rol === "beheerder"): ?>
-            <a href="gebruikers.php" class="nav_item">Gebruikersbeheer</a>
+            <a href="gebuikersBeheren" class="nav_item">Gebruikersbeheer</a>
+            <a href="dashboard.php" class="nav_item">Dashboard</a>
         <?php endif; ?>
     </nav>
 
     <article id="icon_login">
         <?php if (!empty($_SESSION['isIngelogd'])): ?>
-            <span class="welkom_naam">Welkom, <?php echo ucfirst($naam); ?></span>
+            <a><span class="welkom_naam" style="color:aqua"> <?php echo ucfirst($naam); ?></span></a>
             <a href="logout.php"><img src="img/logout.png" alt="logout icon"></a>
         <?php else: ?>
             <a href="login.php"><img src="img/user.png" alt="login icon"></a>

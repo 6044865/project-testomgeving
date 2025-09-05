@@ -1,6 +1,7 @@
 <?php
 session_start();
 require_once "classDatabase.php";
+include "./includes/auth.php";
 
 $error = "";
 $success = "";
@@ -10,6 +11,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $username = trim($_POST["username"]);
         $email    = trim($_POST["email"]);
         $password = $_POST["wachtwoord"];
+        $rol= trim($_POST["rol"]);
 
         try {
             $db = new Database();
@@ -31,7 +33,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 $insertQuery = "INSERT INTO gebruikers (gebruikersnaam, email, wachtwoord, rol, aangemaakt_op) 
                                 VALUES (:username, :email, :password, :rol, NOW())";
                 $insertStmt = $conn->prepare($insertQuery);
-                $rol = "bezoeker"; 
+                // $rol = "bezoeker"; 
 
                 $insertStmt->bindParam(":username", $username);
                 $insertStmt->bindParam(":email", $email);
@@ -75,6 +77,19 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 <label for="wachtwoord"><span id="asterisk">*</span>Wachtwoord:</label>
                 <input type="password" name="wachtwoord" id="wachtwoord" required>
 
+                
+                <!-- <label for="wachtwoord"><span id="asterisk">*</span>Rol:</label>
+                <input type="text" name="rol" id="rol" required> -->
+                <label for="rol"><span id="asterisk">*</span>Rol:</label>
+                    <select id="rol" name="rol" required>
+                    <option value="" selected disabled>— Kies rol —</option>
+                    <option value="beheerder">Beheerder</option>
+                    <option value="onderzoeker">Onderzoeker</option>
+                    <option value="bezoeker">Bezoeker</option>
+                    <option value="archivaris">Archivaris</option>
+                    <option value="redacteur">Redacteur</option>
+                    </select>
+
                 <input type="submit" value="Registreren" name="submit" id="submit">
             </form>
 
@@ -87,7 +102,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             <?php endif; ?>
 
             <article>
-                <a href="login.php">Heb je al een account? <h1 style="color:aqua "  >Log in</h1></a><br><br>
+                <a href=""> <h1 style="color:aqua "  >Gebuikers list</h1></a><br><br>
             </article>
         </section>
     </main>
