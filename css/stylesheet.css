@@ -285,6 +285,14 @@ header {
     background-color: #DCC5B2;
     
   }
+  #sub_nav a {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  line-height: 80px;
+  font-size: 1.2rem;
+  color: white;
+}
 
   
 
@@ -298,9 +306,9 @@ header {
     height: auto;
   }
 
-  #sub_nav>a {
+  /* #sub_nav>a {
     margin-left: 10px;
-  }
+  } */
 
   .search-container input {
     width: 80%;
