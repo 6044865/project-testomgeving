@@ -156,7 +156,7 @@ require_once "./includes/footer.php";
 
 .wonder_card img.poster {
     width: 100%;
-    height: 200px;
+    height: 100px;
     object-fit: cover;
     border-radius: 8px;
     margin-bottom: 10px;

@@ -369,11 +369,6 @@ header {
     margin-top: 20px;
   }
 
-  .films main img,
-  .filmsoverzicht .poster {
-    width: 300px;
-    height: 400px;
-  }
 
   #films_Welcom_img {
     width: 100%;
@@ -440,11 +435,7 @@ header {
     gap: 30px;
   }
 
-  .filmInfo #film_box .poster,
-  .MeerIfoFilm #film_box .poster {
-    width: 500px;
-    height: 70%;
-  }
+  
 
   .filmInfo iframe,
   .MeerIfoFilm iframe {
@@ -571,11 +562,7 @@ header {
   }
 
   /* film pagina main */
-  .films main img,
-  .filmsoverzicht .poster {
-    width: 300px;
-    height: 400px;
-  }
+ 
 
   #filteren_sorteren {
     display: flex;
@@ -611,11 +598,7 @@ header {
     gap: 20px;
   }
 
-  .filmInfo .poster,
-  .MeerIfoFilm .poster {
-    width: 600px;
-    height: 700px;
-  }
+  
 
   .filmInfo #film_box,
   .MeerIfoFilm #film_box {
@@ -925,3 +908,11 @@ header {
   margin: 0% 5% 0% 5%;
   
 }
+#wonderen_container .wonder img.poster {
+  width: 100% !important;
+  max-width: 100% !important;
+  height: 200px !important;
+  object-fit: cover !important;
+}
+
+
