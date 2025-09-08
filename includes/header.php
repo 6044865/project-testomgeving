@@ -34,7 +34,9 @@ $naam = $_SESSION['username'] ?? null;
 
     <nav id="sub_nav">
         <a href="index.php" class="nav_item">Home</a>
-        <a href="wereldwonderen.php" class="nav_item">Wereldwonderen</a>
+       
+           <a href="wereldwonderenOverzicht.php" class="nav_item">Wereldwonderen</a>
+       
 
 
         <?php if (in_array($rol, ["onderzoeker","redacteur","archivaris","beheerder"])): ?>
@@ -65,3 +67,8 @@ $naam = $_SESSION['username'] ?? null;
         <?php endif; ?>
     </article>
 </header>
+
+
+<style>
+    
+</style>
