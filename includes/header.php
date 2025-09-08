@@ -18,7 +18,7 @@ $naam = $_SESSION['username'] ?? null;
 
 <header>
     <article id="logo">
-        <a href="index.php"><img src="./img/wereldwonderen.png" alt="Logo wereldwonderen"></a>
+        <a href="index.php"><img src="./img/wereldwonderenLogo.png" alt="Logo wereldwonderen"></a>
     </article>
 
     <!-- <article class="search-container">
@@ -61,7 +61,7 @@ $naam = $_SESSION['username'] ?? null;
     <article id="icon_login">
         <?php if (!empty($_SESSION['isIngelogd'])): ?>
            <a> <span class="welkom_naam" class="nav_item"> <?php echo ucfirst($naam); ?></span></a>
-            <a href="logout.php"><img src="img/logout.png" alt="logout icon"></a>
+            <a href="logout.php"><img src="img/uitlog.png" alt="logout icon"></a>
         <?php else: ?>
             <a href="login.php"><img src="img/inlog.png" alt="login icon"></a>
         <?php endif; ?>

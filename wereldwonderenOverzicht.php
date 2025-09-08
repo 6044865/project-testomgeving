@@ -1,6 +1,29 @@
-<?php
-// wereldwonderenOverzicht.php
 
+<!-- // wereldwonderenOverzicht.php -->
+
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>wereldwonderen</title>
+    <script src="https://kit.fontawesome.com/0c7c27ff53.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="./css/stylesheet.css">
+    <script src="../project-testomgeving/js/index.js" defer></script>
+  
+    <meta name="description" 
+      content="Codex Mundi is een digitaal archief van de 21 wereldwonderen. Ontdek informatie, foto's, verhalen en geschiedenis van de klassieke, nieuwe en natuurlijke wereldwonderen.">
+<meta name="keywords" 
+      content="wereldwonderen, 7 wereldwonderen, nieuwe wereldwonderen, klassieke wereldwonderen, geschiedenis, cultuur, Codex Mundi, digitaal archief, erfgoed">
+
+
+
+    <meta name="author" content="A.Alhaji, G.Verpaalen">
+
+</head>
+<?php
 require_once "./includes/header.php";
 require_once "classWereldwonder.php";
 

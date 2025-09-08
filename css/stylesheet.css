@@ -918,3 +918,10 @@ header {
         grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
     }
 }
+
+
+#homeFoto{
+  width: 90%;
+  margin: 0% 5% 0% 5%;
+  
+}

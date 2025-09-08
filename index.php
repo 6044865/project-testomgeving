@@ -39,7 +39,14 @@ $rol = $_SESSION['user_role'] ?? 'bezoeker'; // standaard bezoeker als niemand i
             </article>
         </section>
 
-        <section id="slide_show">
+        <section>
+            <article>
+               
+                 <img src="img/homeFoto.png" id="homeFoto" alt=""chinese muur in zonlicht"">
+            </article>
+        </section>
+
+        <!-- <section id="slide_show">
 
             <article>
                 <div class="slide">
@@ -64,7 +71,7 @@ $rol = $_SESSION['user_role'] ?? 'bezoeker'; // standaard bezoeker als niemand i
                     </a>
                 </div>
             </article>
-        </section>
+        </section> -->
        
         <section id="welkom_text">
             <article>
