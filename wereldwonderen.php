@@ -104,32 +104,26 @@ $wonderen = $stmt->fetchAll();
     <form method="get" action="wereldwonderen.php" class="filter_form">
         <input type="text" name="zoekterm" placeholder="Zoek op naam..." value="<?= htmlspecialchars($zoekterm) ?>">
 
-        <select name="type">
-            <option value="">-- Type --</option>
+        <select name="filter">
+            <option value=""></option>
             <option value="klassiek"   <?= $type==='klassiek'?'selected':'' ?>>Klassiek</option>
             <option value="modern"     <?= $type==='modern'?'selected':'' ?>>Modern</option>
             <option value="natuurlijk" <?= $type==='natuurlijk'?'selected':'' ?>>Natuurlijk</option>
-        </select>
-
-        <select name="werelddeel">
-            <option value="">-- Werelddeel --</option>
+        
+           
             <option value="Afrika" <?= $werelddeel==='Afrika'?'selected':'' ?>>Afrika</option>
             <option value="Azië" <?= $werelddeel==='Azië'?'selected':'' ?>>Azië</option>
             <option value="Europa" <?= $werelddeel==='Europa'?'selected':'' ?>>Europa</option>
             <option value="Noord-Amerika" <?= $werelddeel==='Noord-Amerika'?'selected':'' ?>>Noord-Amerika</option>
             <option value="Zuid-Amerika" <?= $werelddeel==='Zuid-Amerika'?'selected':'' ?>>Zuid-Amerika</option>
             <option value="Oceanië" <?= $werelddeel==='Oceanië'?'selected':'' ?>>Oceanië</option>
-        </select>
-
-        <select name="status">
-            <option value="">-- Status --</option>
-            <option value="UNESCO Werelderfgoed" <?= $status==='UNESCO Werelderfgoed'?'selected':'' ?>>UNESCO</option>
+       
+            <option value=""></option>
+           
             <option value="Herbouwd" <?= $status==='Herbouwd'?'selected':'' ?>>Herbouwd</option>
             <option value="Mythisch" <?= $status==='Mythisch'?'selected':'' ?>>Mythisch</option>
-        </select>
-
-        <select name="sorteren">
-            <option value="naam" <?= $sorteren==='naam'?'selected':'' ?>>Naam</option>
+        
+     
             <option value="bouwjaar" <?= $sorteren==='bouwjaar'?'selected':'' ?>>Bouwjaar</option>
             <option value="aangemaakt_op" <?= $sorteren==='aangemaakt_op'?'selected':'' ?>>Toegevoegd</option>
         </select>
