@@ -47,7 +47,7 @@ $naam = $_SESSION['username'] ?? 'Gast';
     <p>Hier zie je de bijdragen die je moet goedkeuren.</p>
     <a href="goedkeuren.php">✅ aanpassingen Goedkeuren</a>
     <a href="">meldingen krijgen van de nieuwste wijzigingen</a>
-    <a href="">Tages toevoegen</a>
+    <a href="">Tags toevoegen</a>
     
 <?php endif; ?>
 
