@@ -176,94 +176,6 @@ class Wereldwonder extends  Database{
 
 
 
-   // Alle wereldwonderen ophalen 
-    // public function haalAlleWonderen(){
-         
-    //                    try {
-    //         $query = "SELECT * FROM " . $this->tableNaam;
-    //         $statement = $this->pdo->query($query);
-    //         $wonderen = $statement->fetchAll();
-
-                
-                
-
-    //                         if($statement){
-                               
-                               
-    //                           echo " <section id='wonderen_container'>";
-    //                            foreach ($wonderen as $wonder) {
-    //             $id = $wonder['wonder_id'];
-                                 
-    //                            echo "<article class='wonder'>
-    //                     <a href='wereldwonderInfo.php?id=$id'>
-    //                     <h2>" . htmlspecialchars($wonder['naam']) . "</h2>
-    //                     <p>" . htmlspecialchars(substr($wonder['beschrijving'], 0, 100)) . "...</p>
-    //                     </a>
-    //                   </article>";
-    //                      }
-    //         echo "</section>";
-    //                             //   HTML-injecties htmlspecialchars() voorkomen
-                                 
-    //                             //   echo "<img class='poster' src='" . htmlspecialchars($film['poster']) . "' alt='Film poster' />";
-    //                             //   echo "<h1>Film Title: " . htmlspecialchars($film['film_title']) . "</h1>";
-                               
-    //                             //   echo " </a>  ";
-                                  
-    //                             //   echo "</article> ";
-
-
-                                  
-                                
-                                
-    //                             //   van 0 tot....
-                                
-                                
-                           
-                              
-                               
-                
-    //                         }
-
-
-    //                     }catch(PDOException $e){
-    //                       echo "Fout bij ophalen: " . $e->getMessage();
-    //                     }
-    // }
-
-
-
-    // Specifiek wereldwonder info tonen
-    // public function toonInfoPerWonder($id){
-        
-    //                     try{
-    //                        $query = "SELECT * FROM " . $this->tableNaam . " WHERE wonder_id = :id";
-    //         $statement = $this->pdo->prepare($query);
-    //         $statement->bindParam(':id', $id);
-    //         $statement->execute();
-    //         $wonder = $statement->fetch();
-
-                
-                
-
-    //                          if ($wonder) {
-    //             echo "<section id='wonder_box'>";
-    //             echo "<h1>" . htmlspecialchars($wonder['naam']) . "</h1>";
-    //             echo "<p>" . htmlspecialchars($wonder['beschrijving']) . "</p>";
-    //             echo "<p><strong>Locatie:</strong> " . htmlspecialchars($wonder['locatie']) . "</p>";
-    //             echo "<p><strong>Werelddeel:</strong> " . htmlspecialchars($wonder['werelddeel']) . "</p>";
-    //             echo "<p><strong>Bestaat nog:</strong> " . ($wonder['bestaat_nog'] ? 'Ja' : 'Nee') . "</p>";
-    //             echo "<p><strong>Tags:</strong> " . htmlspecialchars($wonder['tags']) . "</p>";
-    //             echo "</section>";
-    //         } else {
-    //             echo "Geen wonder gevonden.";
-    //         }
-
-
-    //                     }catch(PDOException $e){
-    //                      echo "Fout bij ophalen: " . $e->getMessage();
-    //                     }
-    // }
-
 
 
 
@@ -351,102 +263,74 @@ public function toonInfoPerWonder($id) {
 
         // ✅ Alle wereldwonderen ophalen met foto
 
+    // public function haalAlleWonderen() {
+    //     try {
+    //         // $query = "SELECT w.*, f.bestandspad 
+    //         //           FROM " . $this->tableNaam . " w
+    //         //           LEFT JOIN fotos f ON w.wonder_id = f.wonder_id AND f.goedgekeurd = 1
+    //         //           GROUP BY w.wonder_id"; 
+    //                   $query = "SELECT w.*, f.bestandspad
+    //       FROM " . $this->tableNaam . " w
+    //       LEFT JOIN (
+    //           SELECT wonder_id, MIN(bestandspad) AS bestandspad
+    //           FROM fotos
+    //           WHERE goedgekeurd = 1
+    //           GROUP BY wonder_id
+    //       ) f ON w.wonder_id = f.wonder_id";
+
+                   
+
+    //         $statement = $this->pdo->query($query);
+    //         $wonderen = $statement->fetchAll();
+
+    //         echo "<section id='wonderen_container'>";
+    //         foreach ($wonderen as $wonder) {
+    //             $id = $wonder['wonder_id'];
+
+    //             // fallback als er geen foto is
+    //             $foto = $wonder['bestandspad'] ? htmlspecialchars($wonder['bestandspad']) : "img/geen_foto.png";
+
+    //             echo "<article class='wonder'>
+    //                     <a href='wereldwonderInfo.php?id=$id'>
+    //                         <img class='poster' src='" . $foto . "' alt='Foto van " . htmlspecialchars($wonder['naam']) . "' />
+    //                         <h2>" . htmlspecialchars($wonder['naam']) . "</h2>
+    //                         <p>" . htmlspecialchars(substr($wonder['beschrijving'], 0, 100)) . "...</p>
+    //                     </a>
+    //                   </article>";
+    //         }
+    //         echo "</section>";
+
+    //     } catch(PDOException $e) {
+    //         echo "Fout bij ophalen: " . $e->getMessage();
+    //     }
+    // }
     public function haalAlleWonderen() {
-        try {
-            $query = "SELECT w.*, f.bestandspad 
-                      FROM " . $this->tableNaam . " w
-                      LEFT JOIN fotos f ON w.wonder_id = f.wonder_id AND f.goedgekeurd = 1
-                      GROUP BY w.wonder_id"; 
-
-            $statement = $this->pdo->query($query);
-            $wonderen = $statement->fetchAll();
-
-            echo "<section id='wonderen_container'>";
-            foreach ($wonderen as $wonder) {
-                $id = $wonder['wonder_id'];
-
-                // fallback als er geen foto is
-                $foto = $wonder['bestandspad'] ? htmlspecialchars($wonder['bestandspad']) : "img/geen_foto.png";
-
-                echo "<article class='wonder'>
-                        <a href='wereldwonderInfo.php?id=$id'>
-                            <img class='poster' src='" . $foto . "' alt='Foto van " . htmlspecialchars($wonder['naam']) . "' />
-                            <h2>" . htmlspecialchars($wonder['naam']) . "</h2>
-                            <p>" . htmlspecialchars(substr($wonder['beschrijving'], 0, 100)) . "...</p>
-                        </a>
-                      </article>";
-            }
-            echo "</section>";
-
-        } catch(PDOException $e) {
-            echo "Fout bij ophalen: " . $e->getMessage();
-        }
-    }
-
-
-
-
-
-    // ✅ Wereldwonderen ophalen met zoek, filter en sorteer
-public function haalAlleWonderenOverzicht($zoekterm, $werelddeel, $bestaatNog, $type, $sorteren) {
     try {
-        // Basisquery
-        $query = "SELECT w.*, f.bestandspad 
+        $query = "SELECT w.wonder_id, w.naam, w.beschrijving, f.bestandspad
                   FROM " . $this->tableNaam . " w
-                  LEFT JOIN fotos f ON w.wonder_id = f.wonder_id AND f.goedgekeurd = 1
-                  WHERE 1=1"; // 1=1 zodat we makkelijk AND's kunnen toevoegen
+                  LEFT JOIN fotos f ON f.id = (
+                      SELECT f2.id
+                      FROM fotos f2
+                      WHERE f2.wonder_id = w.wonder_id AND f2.goedgekeurd = 1
+                      ORDER BY f2.id DESC
+                      LIMIT 1
+                  )";
 
-        // Parameters array voor prepared statement
-        $params = [];
-
-        // 🔍 Zoekterm (naam + beschrijving)
-        if (!empty($zoekterm)) {
-            $query .= " AND (w.naam LIKE :zoekterm OR w.beschrijving LIKE :zoekterm)";
-            $params[':zoekterm'] = "%" . $zoekterm . "%";
-        }
-
-        // 🌍 Filter werelddeel
-        if (!empty($werelddeel)) {
-            $query .= " AND w.werelddeel = :werelddeel";
-            $params[':werelddeel'] = $werelddeel;
-        }
-
-        // ✅ Filter bestaat_nog
-        if ($bestaatNog !== '') { // kan 0 of 1 zijn
-            $query .= " AND w.bestaat_nog = :bestaat_nog";
-            $params[':bestaat_nog'] = $bestaatNog;
-        }
-
-        // 🏛️ Filter type
-        if (!empty($type)) {
-            $query .= " AND w.type = :type";
-            $params[':type'] = $type;
-        }
-
-        // 📊 Sorteeropties
-        $allowedSort = ['naam', 'bouwjaar', 'werelddeel'];
-        if (in_array($sorteren, $allowedSort)) {
-            $query .= " ORDER BY w." . $sorteren . " ASC";
-        } else {
-            $query .= " ORDER BY w.naam ASC"; // fallback
-        }
-
-        $statement = $this->pdo->prepare($query);
-        $statement->execute($params);
+        $statement = $this->pdo->query($query);
         $wonderen = $statement->fetchAll();
 
-        // HTML tonen
         echo "<section id='wonderen_container'>";
         foreach ($wonderen as $wonder) {
             $id = $wonder['wonder_id'];
+
+            // fallback als er geen foto is
             $foto = $wonder['bestandspad'] ? htmlspecialchars($wonder['bestandspad']) : "img/geen_foto.png";
 
             echo "<article class='wonder'>
                     <a href='wereldwonderInfo.php?id=$id'>
                         <img class='poster' src='" . $foto . "' alt='Foto van " . htmlspecialchars($wonder['naam']) . "' />
                         <h2>" . htmlspecialchars($wonder['naam']) . "</h2>
-                        <p>" . htmlspecialchars(substr($wonder['beschrijving'], 0, 100)) . "...</p>
-                    </a>
+                      </a>
                   </article>";
         }
         echo "</section>";
@@ -457,146 +341,102 @@ public function haalAlleWonderenOverzicht($zoekterm, $werelddeel, $bestaatNog, $
 }
 
 
+// data teruggeeft als array om langitude en latitude uit te halen
+public function getWonderMetDetails($id) {
+    try {
+        $query = "SELECT * FROM " . $this->tableNaam . " WHERE wonder_id = :id";
+        $stmt = $this->pdo->prepare($query);
+        $stmt->execute(['id' => $id]);
+        $wonder = $stmt->fetch(PDO::FETCH_ASSOC);
 
-    
-    // public function toonInfoPerFilmMedewerker($id){
-    //   try{
-    //     $query = "SELECT*FROM films where films_id= :id ";
+        if (!$wonder) return null;
 
+        // Voeg eventueel foto's toe
+        $fotoStmt = $this->pdo->prepare("SELECT bestandspad FROM fotos WHERE wonder_id = :id AND goedgekeurd = 1");
+        $fotoStmt->execute(['id' => $id]);
+        $wonder['fotos'] = $fotoStmt->fetchAll(PDO::FETCH_ASSOC);
 
-    //     $statement =  $this->pdo->prepare($query);
+        // Voeg documenten toe
+        $docStmt = $this->pdo->prepare("SELECT bestandspad, type FROM documenten WHERE wonder_id = :id");
+        $docStmt->execute(['id' => $id]);
+        $wonder['docs'] = $docStmt->fetchAll(PDO::FETCH_ASSOC);
 
-      
-    //     $statement->bindParam(':id', $id);
-            
-    //     $statement->execute();
+        return $wonder;
 
-      
-    //     // ik ga hier fetch gebruiken omdat ik een row wil printen niet de alle rows
-    //     $film= $statement->fetch();
-
-
-    //    if($film){
-  
-    //   echo " <section id='film_box'>";
-      
-    //           //   HTML-injecties htmlspecialchars() voorkomen
-    //           echo "<article >";
-    //               echo "<h1>Film Title: " . htmlspecialchars($film['film_title']) . "</h1>";
-    //               echo "<img src='" . htmlspecialchars($film['poster']) . "' alt='Film poster' class='poster'  />";
-    //           echo "</article> ";
-
-
-
-
-    //           echo "<article>";
-
-    //                       // verwijderen en aanpassen knopjes
-    //                       echo "<div class='buttons'>";
-
-    //                       // Aanpassen formulier  \ singel '' of dubbel
-    //                       echo "<form action='filmAanpassen.php' method='post' id='formAanpassen" . $id . "'  onsubmit=\"return confirm('Weet je zeker dat je deze film wilt aanpassen? of Ja klik OK of nee klik Cancel')\">";
-    //                       echo "<input type='hidden' name='film_id' value='" . $id . "' />";
-    //                       echo "<button type='submit'>Aanpassen</button>";
-    //                       echo "</form>";
-
-    //                       // Verwijderen formulier
-    //                       echo "<form action='filmVerwijderen.php' method='post' id='formVerwijderen" . $id . "' onsubmit=\"return confirm('Weet je zeker dat je deze film wilt verwijderen?  of Ja klik OK of nee druk Cancel')\">";
-    //                       echo "<input type='hidden' name='film_id' value='" . $id . "' />";
-    //                       echo "<button type='submit'>Verwijderen</button>";
-    //                       echo "</form>";
-
-    //                       echo "</div>";
+    } catch(PDOException $e) {
+        echo "Fout bij ophalen: " . $e->getMessage();
+        return null;
+    }
+}
 
 
 
 
 
+    // ✅ Wereldwonderen ophalen met zoek, filter en sorteer
 
+public function haalAlleWonderenOverzicht($zoekterm, $werelddeel, $bestaatNog, $type, $sorteren) {
+    try {
+        $query = "SELECT w.*, 
+                         (SELECT f.bestandspad 
+                          FROM fotos f 
+                          WHERE f.wonder_id = w.wonder_id AND f.goedgekeurd = 1 
+                          ORDER BY f.foto_id ASC 
+                          LIMIT 1) AS bestandspad
+                  FROM " . $this->tableNaam . " w
+                  WHERE 1=1";
 
-              // film info
-//                           echo "<h1>Film Genre: </h1> <p>" . htmlspecialchars($film['film_gener']) . "</p>";
-//                           echo "<h1>Film tijd: </h1> <p>" . htmlspecialchars($film['film_duration']) . "</p>";
-//                           echo "<h1>Film omschrijving: </h1> <p>" . htmlspecialchars($film['film_beschrijving']) . "</p>";
-//                           echo "<h1>Film lanceer datum: </h1> <p>" . htmlspecialchars($film['film_lanceer_datum']) . "</p>";
-//                           echo "<h1>Film trailer: </h1> <iframe  src='".htmlspecialchars($film['film_treil'])."' frameborder='0' allow='accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture' allowfullscreen></iframe>";
-                
-//               echo "</article> ";
+        $params = [];
 
-        
+        if (!empty($zoekterm)) {
+            $query .= " AND (w.naam LIKE :zoekterm OR w.beschrijving LIKE :zoekterm)";
+            $params[':zoekterm'] = "%" . $zoekterm . "%";
+        }
+        if (!empty($werelddeel)) {
+            $query .= " AND w.werelddeel = :werelddeel";
+            $params[':werelddeel'] = $werelddeel;
+        }
+        if ($bestaatNog !== '') {
+            $query .= " AND w.bestaat_nog = :bestaat_nog";
+            $params[':bestaat_nog'] = $bestaatNog;
+        }
+        if (!empty($type)) {
+            $query .= " AND w.type = :type";
+            $params[':type'] = $type;
+        }
 
+        // sorteren
+        switch($sorteren) {
+            case 'naam_asc': $orderBy = "w.naam ASC"; break;
+            case 'naam_desc': $orderBy = "w.naam DESC"; break;
+            case 'bouwjaar_asc': $orderBy = "w.bouwjaar ASC"; break;
+            case 'bouwjaar_desc': $orderBy = "w.bouwjaar DESC"; break;
+            default: $orderBy = "w.naam ASC"; break;
+        }
+        $query .= " ORDER BY " . $orderBy;
 
+        $statement = $this->pdo->prepare($query);
+        $statement->execute($params);
+        $wonderen = $statement->fetchAll();
 
+        echo "<section id='wonderen_container'>";
+        foreach ($wonderen as $wonder) {
+            $id = $wonder['wonder_id'];
+            $foto = $wonder['bestandspad'] ? htmlspecialchars($wonder['bestandspad']) : "img/geen_foto.png";
 
+            echo "<article class='wonder_card'>
+                    <a href='wereldwonderInfo.php?id=$id'>
+                        <img class='poster' src='" . $foto . "' alt='Foto van " . htmlspecialchars($wonder['naam']) . "' />
+                        <h2>" . htmlspecialchars($wonder['naam']) . "</h2>
+                    </a>
+                  </article>";
+        }
+        echo "</section>";
 
-//       echo "</section";
-//     }
-
-
-//   } catch(PDOException $e){
-//       $error = $e->getMessage();
-      
-//       echo "query is niet gelukt: ".$error;
-//   }
-//       }
-
-
-//     public function toonInfoPerFilmKlant($id){
-                         
-//         try{
-//           $query = "SELECT*FROM films where films_id= :id ";
-
-
-//           $statement =  $this->pdo->prepare($query);
-
-        
-//           $statement->bindParam(':id', $id);
-              
-//           $statement->execute();
-
-//           //    $films= $statement->fetchAll();
-//           // ik ga hier fetch gebruiken omdat ik een row wil printen niet de alle rows
-//           $film= $statement->fetch();
-
-
-//           if($film){
-   
-//              echo " <section id='film_box'>";
-      
-//                 //   HTML-injecties htmlspecialchars() voorkomen
-//                 echo "<article  >";
-//                     echo "<h1>Film Title: " . htmlspecialchars($film['film_title']) . "</h1>";
-//                     echo "<img src='" . htmlspecialchars($film['poster']) . "' alt='Film poster' class='poster'  />";
-//                 echo "</article> ";
-                
-
-
-//               // film info
-//               echo "<article> ";
-//                           echo "<h1>Film Genre: </h1> <p>" . htmlspecialchars($film['film_gener']) . "</p>";
-//                           echo "<h1>Film tijd: </h1> <p>" . htmlspecialchars($film['film_duration']) . "</p>";
-//                           echo "<h1>Film omschrijving: </h1> <p>" . htmlspecialchars($film['film_beschrijving']) . "</p>";
-//                           echo "<h1>Film lanceer datum: </h1> <p>" . htmlspecialchars($film['film_lanceer_datum']) . "</p>";
-//                           echo "<h1>Film trailer: </h1> <iframe  src='".htmlspecialchars($film['film_treil'])."' frameborder='0' allow='accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture' allowfullscreen></iframe>";
-                 
-//               echo "</article> ";
-
-        
-
-
-
-
-
-//             echo "</section";
-//       }
-
-
-//   } catch(PDOException $e){
-//       $error = $e->getMessage();
-      
-//       echo "query is niet gelukt: ".$error;
-//   }
-//       }
+    } catch(PDOException $e) {
+        echo "Fout bij ophalen: " . $e->getMessage();
+    }
+}
 
  }
 
