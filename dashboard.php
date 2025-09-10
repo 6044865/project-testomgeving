@@ -57,10 +57,10 @@ $naam = $_SESSION['username'] ?? 'Gast';
         <h1>Gebuikers beheer</h1>
          <li><a href="">👤 Gebruikers list</a></li>
           <li><a href="registreren.php"> Gebruikers Toeveogen</a></li>
-        <li><a href="gebruikers.php"> Gebruikers verwijderen</a></li>
-          <li><a href="gebruikers.php"> Gebruikers aanpassen</a></li>
+        <li><a href="gebuikersBeheren.php"> Gebruikers verwijderen</a></li>
+          <li><a href="gebruiker_bewerken.php"> Gebruikers aanpassen</a></li>
           <h1>wereldwonderen beheren</h1>
-           <li><a href="registreren.php"> wereld wonderen Toeveogen</a></li>
+           <li><a href="toevoegenWereldwonder.php"> wereld wonderen Toeveogen</a></li>
         <li><a href="gebruikers.php">wereld verwijderen</a></li>
           <li><a href="gebruikers.php"> wereldwonderen aanpassen</a></li>
           <!-- eigen filter -->

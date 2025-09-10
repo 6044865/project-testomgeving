@@ -1,5 +1,35 @@
+ 
+<!DOCTYPE html>
+<html lang="en">
+ 
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>wereldwonderen</title>
+    <script src="https://kit.fontawesome.com/0c7c27ff53.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="./css/stylesheet.css">
+    <script src="../project-testomgeving/js/index.js" defer></script>
+    <!-- Leaflet CSS -->
+<link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+<!-- Leaflet JS -->
+<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+
+ 
+    <meta name="description"
+      content="Codex Mundi is een digitaal archief van de 21 wereldwonderen. Ontdek informatie, foto's, verhalen en geschiedenis van de klassieke, nieuwe en natuurlijke wereldwonderen.">
+<meta name="keywords"
+      content="wereldwonderen, 7 wereldwonderen, nieuwe wereldwonderen, klassieke wereldwonderen, geschiedenis, cultuur, Codex Mundi, digitaal archief, erfgoed">
+ 
+ 
+ 
+    <meta name="author" content="A.Alhaji, G.Verpaalen">
+ 
+</head>
 <?php
+
 require_once __DIR__ . "/includes/auth.php";
+include "./includes/header.php";
+
 require_once __DIR__ . "/classDatabase.php";
 
 // ✅ Alleen beheerder toegang
@@ -68,7 +98,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 }
 ?>
 
-<?php include "./includes/header.php"; ?>
+
 
 <main style="width:60%;margin:30px auto;">
     <h2>Gebruiker bewerken</h2>
@@ -77,7 +107,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     <?php if (!empty($success)): ?><p style="color:green;"><?= $success; ?></p><?php endif; ?>
 
     <form method="post">
-        <label>Gebruikersnaam:</label><br>
+        <label >Gebruikersnaam:</label><br>
         <input type="text" name="gebruikersnaam" value="<?= htmlspecialchars($gebruiker['gebruikersnaam']); ?>" required><br><br>
 
         <label>Email:</label><br>
@@ -92,7 +122,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             <option value="redacteur"  <?= $gebruiker['rol'] === 'redacteur' ? 'selected' : ''; ?>>Redacteur</option>
         </select><br><br>
 
-        <label>Nieuw wachtwoord (optioneel):</label><br>
+        <label >Nieuw wachtwoord (optioneel):</label><br>
         <input type="password" name="wachtwoord"><br><br>
 
         <input type="submit" value="Opslaan" 
@@ -101,3 +131,6 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 </main>
 
 <?php include "./includes/footer.php"; ?>
+<style>
+  
+</style>
