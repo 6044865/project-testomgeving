@@ -1,30 +1,6 @@
-<?php 
-
+<?php
 require_once "classDatabase.php";
 require_once "classWereldwonder.php";
-
-// rechten per rol
-$rechten = [
-    "onderzoeker" => ["naam", "beschrijving"],
-    "archivist"   => ["bouwjaar", "bestaat_nog", "status", "tags"],
-    "beheerder"   => ["naam", "beschrijving", "bouwjaar", "bestaat_nog", "status", "tags", "wereldeel", "locatie", "latitude", "longitude"]
-];
-
-$toegestaan = $rechten[$rol] ?? [];
-
-$velden = [];
-$waardes = [];
-
-// loop door alle velden uit het formulier
-foreach($_POST as $veld => $waarde){
-    if($veld === "wonder_id") continue; // id mag nooit aangepast worden
-    if($rol === "beheerder" || in_array($veld, $toegestaan)){
-        // deze gebruiker mag dit veld aanpassen → toevoegen aan query
-        $velden[] = "$veld = ?";
-        $waardes[] = $waarde;
-    }
-}
-
 
 session_start();
 
@@ -86,6 +62,10 @@ try {
 } catch (PDOException $e) {
     echo "Fout bij opslaan: " . $e->getMessage();
 }
+
+
+
+
 
 
 
