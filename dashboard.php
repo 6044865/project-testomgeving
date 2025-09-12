@@ -45,7 +45,7 @@ $naam = $_SESSION['username'] ?? 'Gast';
 
 <?php if ($rol === "redacteur"): ?>
     <p>Hier zie je de bijdragen die je moet goedkeuren.</p>
-    <a href="goedkeuren.php">✅ aanpassingen Goedkeuren</a>
+    <a href="">✅ aanpassingen Goedkeuren</a>
     <a href="">meldingen krijgen van de nieuwste wijzigingen</a>
     <a href="">Tags toevoegen</a>
     
@@ -62,7 +62,7 @@ $naam = $_SESSION['username'] ?? 'Gast';
           <h1>wereldwonderen beheren</h1>
            <li><a href="toevoegenWereldwonder.php"> wereld wonderen Toeveogen</a></li>
         <li><a href="gebruikers.php">wereld verwijderen</a></li>
-          <li><a href="gebruikers.php"> wereldwonderen aanpassen</a></li>
+          <li><a href="wereldwonderBewerken.php"> wereldwonderen aanpassen</a></li>
           <!-- eigen filter -->
         
          
