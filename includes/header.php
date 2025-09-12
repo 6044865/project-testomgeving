@@ -40,7 +40,7 @@ $naam = $_SESSION['username'] ?? null;
 
 
         <?php if (in_array($rol, ["onderzoeker","redacteur","archivaris","beheerder"])): ?>
-            <a href="toevoegen.php" class="nav_item">Toevoegen</a>
+            <a href="toevoegenWereldwonder.php" class="nav_item">Toevoegen</a>
         <?php endif; ?>
 
         <?php if (in_array($rol, ["redacteur","beheerder"])): ?>
