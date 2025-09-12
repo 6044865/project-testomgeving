@@ -40,7 +40,7 @@ $naam = $_SESSION['username'] ?? 'Gast';
 <?php if ($rol === "onderzoeker"): ?>
     <p>Je kunt nieuwe wereldwonderen toevoegen.</p>
     <a href="toevoegen.php">➕  wereldwonderen Toevoegen</a>
-     <a href="wereldwonderBewerken.php"> Eigen wereldwonderen aanpassen/auteur</a>
+     <a href="wereldwonderaanpassen.php"> Eigen wereldwonderen aanpassen/auteur</a>
 <?php endif; ?>
 
 <?php if ($rol === "redacteur"): ?>
