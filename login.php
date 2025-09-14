@@ -20,6 +20,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $stmt->execute();
             $gebruiker = $stmt->fetch();
 
+            $_SESSION['isIngelogd'] = true;
+$_SESSION['rol'] = $gebruiker['rol']; // bijvoorbeeld "beheerder", "onderzoeker" of "archivist"
+
+
             // Bestaat gebruiker en wachtwoord correct?
             if ($gebruiker && password_verify($password, $gebruiker['wachtwoord'])) {
                 // ✅ Login gelukt → sessies zetten
