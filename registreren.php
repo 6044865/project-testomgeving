@@ -1,7 +1,30 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>wereldwonderen</title>
+    <script src="https://kit.fontawesome.com/0c7c27ff53.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="./css/stylesheet.css">
+    <script src="../project-testomgeving/js/index.js" defer></script>
+  
+    <meta name="description" 
+      content="Codex Mundi is een digitaal archief van de 21 wereldwonderen. Ontdek informatie, foto's, verhalen en geschiedenis van de klassieke, nieuwe en natuurlijke wereldwonderen.">
+<meta name="keywords" 
+      content="wereldwonderen, 7 wereldwonderen, nieuwe wereldwonderen, klassieke wereldwonderen, geschiedenis, cultuur, Codex Mundi, digitaal archief, erfgoed">
+
+
+
+    <meta name="author" content="A.Alhaji, G.Verpaalen">
+
+</head>
 <?php
 
 require_once "classDatabase.php";
 include "./includes/auth.php";
+include "./includes/header.php";
 
 $error = "";
 $success = "";
@@ -41,7 +64,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 $insertStmt->bindParam(":rol", $rol);
 
                 if ($insertStmt->execute()) {
-                    $success = "✅ Registratie gelukt! Je kunt nu inloggen.";
+                    // $success = "✅ Registratie gelukt! Je kunt nu inloggen.";
+                    header("Location: gebuikersBeheren.php");
+               
                 } else {
                     $error = "❌ Er is iets fout gegaan bij het registreren.";
                 }
@@ -101,10 +126,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 <p style="color:green;"><?php echo $success; ?></p>
             <?php endif; ?>
 
-            <article>
+            <!-- <article>
                 <a href=""> <h1 style="color:aqua "  >Gebuikers list</h1></a><br><br>
-            </article>
+            </article> -->
         </section>
     </main>
+    <?php 
+    include "./includes/footer.php";
+    ?>
 </body>
 </html>

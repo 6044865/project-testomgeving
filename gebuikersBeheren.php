@@ -1,89 +1,69 @@
-
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>wereldwonderen</title>
-    <script src="https://kit.fontawesome.com/0c7c27ff53.js" crossorigin="anonymous"></script>
-    <link rel="stylesheet" href="./css/stylesheet.css">
-    <script src="../project-testomgeving/js/index.js" defer></script>
-  
-    <meta name="description" 
-      content="Codex Mundi is een digitaal archief van de 21 wereldwonderen. Ontdek informatie, foto's, verhalen en geschiedenis van de klassieke, nieuwe en natuurlijke wereldwonderen.">
-<meta name="keywords" 
-      content="wereldwonderen, 7 wereldwonderen, nieuwe wereldwonderen, klassieke wereldwonderen, geschiedenis, cultuur, Codex Mundi, digitaal archief, erfgoed">
-
-
-
-    <meta name="author" content="A.Alhaji, G.Verpaalen">
-
-</head>
-
-<body class="">
 <?php
 require_once __DIR__ . "/includes/auth.php";  
-require_once __DIR__ . "/classDatabase.php";
+require_once __DIR__ . "/GebuikerClass.php";
 
-$db = new Database();
-$pdo = $db->getConnection();
-
-// ✅ Alleen beheerders mogen deze pagina zien
+// Alleen beheerders mogen deze pagina zien
 if ($_SESSION['user_role'] !== 'beheerder') {
     header("Location: index.php");
     exit;
 }
 
-// Alle gebruikers ophalen
-$stmt = $pdo->query("SELECT gebruiker_id, gebruikersnaam, email, rol, aangemaakt_op 
-                     FROM gebruikers ORDER BY gebruiker_id ASC");
-$gebruikers = $stmt->fetchAll();
+$gebruikerClass = new Gebruiker();
+$gebruikers = $gebruikerClass->getAlleGebruikers();
 ?>
 
+<!DOCTYPE html>
+<html lang="nl">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gebruikersbeheer</title>
+    <link rel="stylesheet" href="./css/stylesheet.css">
+    <script src="https://kit.fontawesome.com/0c7c27ff53.js" crossorigin="anonymous"></script>
+    <style>
+        main { width: 90%; margin: 30px auto; }
+        h2 { color: #4B2E2E; margin-bottom: 20px; }
+        .btn { display:inline-block; padding:8px 12px; text-decoration:none; border-radius:5px; color:#fff; margin-bottom:15px; }
+        .btn-toevoegen { background:#8B5E3C; }
+        .card { background:#F5F0E6; border:1px solid #D2B48C; border-radius:8px; padding:15px; margin-bottom:15px; box-shadow:2px 2px 6px rgba(0,0,0,0.1); }
+        .card h3 { margin:0 0 10px 0; color:#5A3E36; }
+        .card p { margin:3px 0; }
+        .actions { margin-top:10px; }
+        .actions a { display:inline-block; margin-right:10px; padding:5px 10px; border-radius:4px; text-decoration:none; color:#fff; }
+        .actions .bewerken { background:#4CAF50; }
+        .actions .verwijderen { background:#f44336; }
+    </style>
+</head>
+
+<body>
 <?php include "./includes/header.php"; ?>
 
-<main style="width:80%;margin:30px auto;">
+<main>
     <h2>Gebruikersbeheer</h2>
 
-    <a href="registreren.php" 
-       style="display:inline-block;padding:8px 12px;background:#28a745;color:#fff;text-decoration:none;border-radius:5px;margin-bottom:15px;"> 
-       ➕ Nieuwe gebruiker
-    </a>
+    <a href="registreren.php" class="btn btn-toevoegen">➕ Nieuwe gebruiker</a>
 
-    <table border="1" cellspacing="0" cellpadding="8" width="100%">
-        <thead style="background:#f4f4f4;">
-            <tr>
-                <th>ID</th>
-                <th>Gebruikersnaam</th>
-                <th>Email</th>
-                <th>Rol</th>
-                <th>Aangemaakt op</th>
-                <th>Acties</th>
-            </tr>
-        </thead>
-        <tbody>
-            <?php if ($gebruikers): ?>
-                <?php foreach ($gebruikers as $g): ?>
-                    <tr>
-                        <td><?= htmlspecialchars($g['gebruiker_id']); ?></td>
-                        <td><?= htmlspecialchars($g['gebruikersnaam']); ?></td>
-                        <td><?= htmlspecialchars($g['email']); ?></td>
-                        <td><?= htmlspecialchars($g['rol']); ?></td>
-                        <td><?= htmlspecialchars($g['aangemaakt_op']); ?></td>
-                        <td>
-                            <a href="gebruiker_bewerken.php?id=<?= $g['gebruiker_id']; ?>">✏️ Bewerken</a> | 
-                            <a href="gebruiker_verwijderen.php?id=<?= $g['gebruiker_id']; ?>" 
-                               onclick="return confirm('Weet je zeker dat je deze gebruiker wilt verwijderen?');">🗑️ Verwijderen</a>
-                        </td>
-                    </tr>
-                <?php endforeach; ?>
-            <?php else: ?>
-                <tr><td colspan="6">Geen gebruikers gevonden.</td></tr>
-            <?php endif; ?>
-        </tbody>
-    </table>
+    <?php if ($gebruikers): ?>
+        <?php foreach ($gebruikers as $g): ?>
+            <div class="card">
+                <h3><?= htmlspecialchars($g['gebruikersnaam']); ?> </h3>
+                 <p><strong>Id:</strong> <?= htmlspecialchars($g['gebruiker_id']); ?></p>
+                <p><strong>Email:</strong> <?= htmlspecialchars($g['email']); ?></p>
+                <p><strong>Rol:</strong> <?= htmlspecialchars($g['rol']); ?></p>
+             
+                <div class="actions">
+                    <a href="gebruiker_bewerken.php?id=<?= $g['gebruiker_id']; ?>" class="bewerken">✏️ Bewerken</a>
+                    <a href="gebruiker_verwijderen.php?id=<?= $g['gebruiker_id']; ?>" class="verwijderen" 
+                       onclick="return confirm('Weet je zeker dat je deze gebruiker wilt verwijderen?');">🗑️ Verwijderen</a>
+                </div>
+            </div>
+        <?php endforeach; ?>
+    <?php else: ?>
+        <p>Geen gebruikers gevonden.</p>
+    <?php endif; ?>
 </main>
-</body>
 
 <?php include "./includes/footer.php"; ?>
+</body>
+</html>

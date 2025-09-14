@@ -1,7 +1,7 @@
- 
+
 <!DOCTYPE html>
 <html lang="en">
- 
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,44 +9,46 @@
     <script src="https://kit.fontawesome.com/0c7c27ff53.js" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="./css/stylesheet.css">
     <script src="../project-testomgeving/js/index.js" defer></script>
-    <!-- Leaflet CSS -->
-<link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
-<!-- Leaflet JS -->
-<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
-
- 
-    <meta name="description"
+  
+    <meta name="description" 
       content="Codex Mundi is een digitaal archief van de 21 wereldwonderen. Ontdek informatie, foto's, verhalen en geschiedenis van de klassieke, nieuwe en natuurlijke wereldwonderen.">
-<meta name="keywords"
+<meta name="keywords" 
       content="wereldwonderen, 7 wereldwonderen, nieuwe wereldwonderen, klassieke wereldwonderen, geschiedenis, cultuur, Codex Mundi, digitaal archief, erfgoed">
- 
- 
- 
+
+
+
     <meta name="author" content="A.Alhaji, G.Verpaalen">
- 
+
 </head>
 
 <?php
-require_once "includes/auth.php";
-include "./includes/header.php";
-require_once "classWereldwonder.php";
+require_once "includes/auth.php"; // sessie & login check
 
-$ww = new Wereldwonder();
 
-// lijst van alle wonderen (alleen ID en naam)
-$wonderen = $ww->getAlleWonderen();
-
-$selectedWonder = null;
-
-if (isset($_POST['select_wonder'])) {
-    $wonderId = (int)$_POST['wonder_id'];
-    if ($wonderId > 0) {
-        $selectedWonder = $ww->getWonderMetDetails($wonderId);
-    }
+// Alleen beheerders mogen aanpassen
+if ($rol !== 'beheerder') {
+    die("❌ Toegang geweigerd. Alleen voor beheerders.");
 }
 
-if ($selectedWonder && isset($_POST['submit_form'])) {
-    $wonderId = (int)$_POST['wonder_id'];
+require_once "./classWereldwonder.php";
+$ww = new Wereldwonder();
+$message = "";
+
+// ID ophalen uit GET
+$wonderId = isset($_GET['id']) ? (int)$_GET['id'] : 0;
+
+if ($wonderId <= 0) {
+    die("❌ Ongeldig wonder ID.");
+}
+
+// Haal de details van het wonder op
+$selectedWonder = $ww->getWonderMetDetails($wonderId);
+if (!$selectedWonder) {
+    die("❌ Wereldwonder niet gevonden.");
+}
+
+// Handle form submission
+if (isset($_POST['submit_form'])) {
     $naam = $_POST['naam'] ?? '';
     $beschrijving = $_POST['beschrijving'] ?? '';
     $bouwjaar = isset($_POST['bouwjaar']) && $_POST['bouwjaar'] !== '' ? (int)$_POST['bouwjaar'] : null;
@@ -59,51 +61,32 @@ if ($selectedWonder && isset($_POST['submit_form'])) {
     $status = $_POST['status'] ?? null;
     $tags = $_POST['tags'] ?? null;
 
-    try {
-        $ww->wonderUpdaten(
-            $wonderId, $naam, $beschrijving, $bouwjaar, $werelddeel,
-            $type, $bestaat_nog, $locatie, $latitude, $longitude, $status, $tags
-        );
-        echo "<p style='color:green;'>✅ Wereldwonder succesvol bijgewerkt!</p>";
+    $result = $ww->wonderUpdaten(
+        $wonderId, $naam, $beschrijving, $bouwjaar, $werelddeel,
+        $type, $bestaat_nog, $locatie, $latitude, $longitude, $status, $tags
+    );
+
+    if ($result) {
+        $message = "<p style='color:green;'>✅ Wereldwonder succesvol bijgewerkt!</p>";
+        // Herlaad details
         $selectedWonder = $ww->getWonderMetDetails($wonderId);
-    } catch (PDOException $e) {
-        echo "<p style='color:red;'>❌ Fout bij updaten: " . $e->getMessage() . "</p>";
+    } else {
+        $message = "<p style='color:red;'>❌ Fout bij bijwerken.</p>";
     }
 }
 ?>
 
-<!DOCTYPE html>
-<html lang="nl">
-<head>
-    <meta charset="UTF-8">
-    <title>Bewerk Wereldwonder</title>
-    <style>
-        form { max-width: 600px; margin: 20px auto; display: flex; flex-direction: column; gap: 10px; }
-        input, textarea, select { padding: 8px; font-size: 16px; }
-        button { padding: 10px; font-size: 16px; cursor: pointer; }
-        img { max-width: 150px; display: block; margin-bottom: 5px; }
-    </style>
-</head>
 <body>
-<h1>Bewerk Wereldwonder</h1>
+    
+<?php
+include "./includes/header.php";
+?>
+<main>
+<h1>Bewerk Wereldwonder: <?= htmlspecialchars($selectedWonder['naam']) ?></h1>
+
+<?= $message ?>
 
 <form method="post">
-    <label>Kies een Wereldwonder:</label>
-    <select name="wonder_id" onchange="this.form.submit()">
-        <option value="">-- Kies --</option>
-        <?php foreach ($wonderen as $w): ?>
-            <option value="<?= $w['wonder_id'] ?>" <?= ($selectedWonder && $w['wonder_id'] == $selectedWonder['wonder_id']) ? 'selected' : '' ?>>
-                <?= htmlspecialchars($w['naam']) ?>
-            </option>
-        <?php endforeach; ?>
-    </select>
-    <input type="hidden" name="select_wonder">
-</form>
-
-<?php if ($selectedWonder): ?>
-<form method="post" enctype="multipart/form-data">
-    <input type="hidden" name="wonder_id" value="<?= $selectedWonder['wonder_id'] ?>">
-
     <label>Naam:</label>
     <input type="text" name="naam" value="<?= htmlspecialchars($selectedWonder['naam'] ?? '') ?>" required>
 
@@ -121,6 +104,7 @@ if ($selectedWonder && isset($_POST['submit_form'])) {
         <option value="">-- Kies type --</option>
         <option value="klassiek" <?= ($selectedWonder['type'] ?? '') === 'klassiek' ? 'selected' : '' ?>>Klassiek</option>
         <option value="modern" <?= ($selectedWonder['type'] ?? '') === 'modern' ? 'selected' : '' ?>>Modern</option>
+        <option value="natuurlijk" <?= ($selectedWonder['type'] ?? '') === 'natuurlijk' ? 'selected' : '' ?>>Natuurlijk</option>
     </select>
 
     <label>Bestaat nog:</label>
@@ -145,29 +129,9 @@ if ($selectedWonder && isset($_POST['submit_form'])) {
     <label>Tags:</label>
     <input type="text" name="tags" value="<?= htmlspecialchars($selectedWonder['tags'] ?? '') ?>">
 
-    <h3>Bestaande Foto's:</h3>
-    <?php if (!empty($selectedWonder['fotos'])): ?>
-        <?php foreach ($selectedWonder['fotos'] as $foto): ?>
-            <img src="<?= htmlspecialchars($foto['bestandspad'] ?? '') ?>" alt="Foto">
-        <?php endforeach; ?>
-    <?php else: ?>
-        <p>Geen foto's beschikbaar</p>
-    <?php endif; ?>
-
-    <h3>Bestaande Documenten:</h3>
-    <?php if (!empty($selectedWonder['docs'])): ?>
-        <ul>
-            <?php foreach ($selectedWonder['docs'] as $doc): ?>
-                <li><a href="<?= htmlspecialchars($doc['bestandspad'] ?? '') ?>" target="_blank">Document (<?= htmlspecialchars($doc['type'] ?? '') ?>)</a></li>
-            <?php endforeach; ?>
-        </ul>
-    <?php else: ?>
-        <p>Geen documenten beschikbaar</p>
-    <?php endif; ?>
-
     <button type="submit" name="submit_form">Opslaan</button>
 </form>
-<?php endif; ?>
+</main>
 <?php
 include "./includes/footer.php";
 ?>

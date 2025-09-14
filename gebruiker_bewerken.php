@@ -86,7 +86,10 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     }
 
     if ($stmt->execute()) {
-        $success = "✅ Gebruiker succesvol bijgewerkt.";
+        // $success = "✅ Gebruiker succesvol bijgewerkt.";
+         header("Location: gebuikersBeheren.php");
+               
+        
         // opnieuw ophalen voor weergave
         $stmt2 = $pdo->prepare("SELECT * FROM gebruikers WHERE gebruiker_id = :id");
         $stmt2->bindParam(":id", $id, PDO::PARAM_INT);

@@ -1,10 +1,4 @@
 <?php
-// if (session_status() === PHP_SESSION_NONE) {
-//     session_start();
-// }
-
-// $rol  = $_SESSION['user_role'] ?? 'bezoeker';
-// $naam = $_SESSION['username'] ?? null;
 
 
 if (session_status() === PHP_SESSION_NONE) {
@@ -21,12 +15,6 @@ $naam = $_SESSION['username'] ?? null;
         <a href="index.php"><img src="./img/wereldwonderenLogo.png" alt="Logo wereldwonderen"></a>
     </article>
 
-    <!-- <article class="search-container">
-        <form action="#" method="post">
-            <input type="text" placeholder=" Search..." name="search">
-            <button type="submit"><i class="fa fa-search"></i></button>
-        </form>
-    </article> -->
 
     <article id="icon_menu">
         <i class="fa fa-bars" aria-hidden="true"></i>
@@ -40,18 +28,10 @@ $naam = $_SESSION['username'] ?? null;
 
 
         <?php if (in_array($rol, ["onderzoeker","redacteur","archivaris","beheerder"])): ?>
-            <a href="toevoegenWereldwonder.php" class="nav_item">Toevoegen</a>
-            <a href="wereldwonderaanpassen.php" class="nav_item"> aanpassen</a>
+            <a href="dashboard.php" class="nav_item">Dashobard</a>
+            
         <?php endif; ?>
 
-        <?php if (in_array($rol, ["redacteur","beheerder"])): ?>
-            <a href="goedkeuren.php" class="nav_item">Goedkeuren</a>
-        <?php endif; ?>
-
-        <?php if ($rol === "beheerder"): ?>
-            <a href="gebuikersBeheren.php" class="nav_item">Gebruikersbeheer</a>
-            <a href="dashboard.php" class="nav_item">Dashboard</a>
-        <?php endif; ?>
          <?php if ($rol === "bezoeker"): ?>
             <a href="overons.php" class="nav_item">Over ons</a>
         <a href="contact.php" class="nav_item">Contact</a>

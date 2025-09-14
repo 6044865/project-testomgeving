@@ -1,4 +1,3 @@
-
 <?php
 require_once "./includes/auth.php";
 
@@ -7,73 +6,144 @@ $naam = $_SESSION['username'] ?? 'Gast';
 ?>
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="nl">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>wereldwonderen</title>
+    <title>Wereldwonderen Dashboard</title>
     <script src="https://kit.fontawesome.com/0c7c27ff53.js" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="./css/stylesheet.css">
-    <script src="../project-testomgeving/js/index.js" defer></script>
-  
+
     <meta name="description" 
       content="Codex Mundi is een digitaal archief van de 21 wereldwonderen. Ontdek informatie, foto's, verhalen en geschiedenis van de klassieke, nieuwe en natuurlijke wereldwonderen.">
-<meta name="keywords" 
+    <meta name="keywords" 
       content="wereldwonderen, 7 wereldwonderen, nieuwe wereldwonderen, klassieke wereldwonderen, geschiedenis, cultuur, Codex Mundi, digitaal archief, erfgoed">
-
-
-
     <meta name="author" content="A.Alhaji, G.Verpaalen">
 
+    <style>
+        body.dashboard_pagina {
+            font-family: Arial, sans-serif;
+            background-color: #f9f9f9;
+            margin: 0;
+            padding: 0;
+        }
+
+        main {
+            max-width: 1200px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+
+        .cards {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            justify-content: center;
+            margin-top: 30px;
+        }
+
+        .card {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            padding: 20px;
+            width: 250px;
+            text-align: center;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 4px 16px rgba(0,0,0,0.2);
+        }
+
+        .card h2 {
+            font-size: 18px;
+            margin-bottom: 10px;
+            color:   #D9A299;
+        }
+
+        .card a {
+            display: inline-block;
+            margin: 8px 0;
+            padding: 10px 15px;
+            background-color: #D9A299;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: background-color 0.2s;
+        }
+
+        .card a:hover {
+            background-color:#D9A299;
+        }
+
+        footer {
+            text-align: center;
+            padding: 20px;
+            background-color: #eee;
+            margin-top: 50px;
+        }
+    </style>
 </head>
 
-<body class="dahshborad_pagina">
-    
+<body class="dashboard_pagina">
+
 <?php include "./includes/header.php"; ?>
+
 <main>
-    
+    <h1>Welkom!</h1> <strong><p>Jouw naam is:  <?php echo ucfirst($naam); ?></p><p>  Jouw rol is:  <?php echo ucfirst($rol); ?></p></strong>
 
+    <div class="cards">
+        <?php if ($rol === "onderzoeker"): ?>
+            <div class="card">
+              
+                  <a href="">Wereldwonderen toevoegen</a>
+                  </div>
+            <div class="card">
+              
+                <a href=""> Eigen wereldwonderen aanpassen</a>
+            </div>
+        <?php endif; ?>
 
-<h1>Welkom op je dashboard, <?php echo ucfirst($naam); ?>! (<?php echo ucfirst($rol); ?>)</h1>
+        <?php if ($rol === "redacteur"): ?>
+            
+            <div class="card">
+             
+                <a href="">✅ Aanpassingen goedkeuren</a></div>
+                  <div class="card">
+                <a href="">🔔 Meldingen van wijzigingen</a></div>
+                  <div class="card">
+                <a href="">🏷️ Tags toevoegen</a>
+            </div>
+        <?php endif; ?>
 
-<?php if ($rol === "onderzoeker"): ?>
-    <p>Je kunt nieuwe wereldwonderen toevoegen.</p>
-    <a href="toevoegen.php">➕  wereldwonderen Toevoegen</a>
-     <a href="wereldwonderaanpassen.php"> Eigen wereldwonderen aanpassen/auteur</a>
-<?php endif; ?>
-
-<?php if ($rol === "redacteur"): ?>
-    <p>Hier zie je de bijdragen die je moet goedkeuren.</p>
-    <a href="">✅ aanpassingen Goedkeuren</a>
-    <a href="">meldingen krijgen van de nieuwste wijzigingen</a>
-    <a href="">Tags toevoegen</a>
-    
-<?php endif; ?>
-
-<?php if ($rol === "beheerder"): ?>
-    <p>Beheerdersopties:</p>
-    <ul>
-        <h1>Gebuikers beheer</h1>
-         <li><a href="">👤 Gebruikers list</a></li>
-          <li><a href="registreren.php"> Gebruikers Toeveogen</a></li>
-        <li><a href="gebuikersBeheren.php"> Gebruikers verwijderen</a></li>
-          <li><a href="gebruiker_bewerken.php"> Gebruikers aanpassen</a></li>
-          <h1>wereldwonderen beheren</h1>
-           <li><a href="toevoegenWereldwonder.php"> wereld wonderen Toeveogen</a></li>
-        <li><a href="gebruikers.php">wereld verwijderen</a></li>
-          <li><a href="wereldwonderBewerken.php"> wereldwonderen aanpassen</a></li>
-          <!-- eigen filter -->
-        
-         
-          <!-- <a href="registreren.php">Heb je nog geen account? Klik hier om te registreren.</a><br><br> -->
-        <li><a href="logs.php">📜 Logbestanden</a></li>
-    </ul>
-<?php endif; ?>
+        <?php if ($rol === "beheerder"): ?>
+            <div class="card">
+             
+                <a href="gebuikersBeheren.php">Gebruikers beheren</a>
+            </div>
+            <div class="card">
+              
+                <a href="wonderBeheer.php"> Wereldwonderen beheren</a>
+            </div>
+            <div class="card">
+            
+                <a href="logs.php"> Logbestanden bekijken</a>
+            </div>
+        <?php endif; ?>
+    </div>
 </main>
+
 <footer>
-        <?php include "./includes/footer.php"; ?>
-
+    <?php include "./includes/footer.php"; ?>
 </footer>
-</body>
 
+</body>
+</html>

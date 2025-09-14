@@ -17,7 +17,7 @@ class Wereldwonder extends  Database{
             VALUES (:naam, :beschrijving, :bouwjaar, :werelddeel, :type, :bestaat_nog, :toegevoegd_door, :locatie, :latitude, :longitude, :status, :tags)";
 
 
-              $statement =  $this->pdo->prepare($query);
+           
 
             $statement = $this->pdo->prepare($query);
 
@@ -35,13 +35,11 @@ class Wereldwonder extends  Database{
             $statement->bindParam(':tags', $tags);
 
           $statement->execute();
+if ($statement->rowCount() > 0) {
+    header("Location: wonderBeheer.php");
+    exit();
+}
 
-          if($statement){
-            // echo " Film is toegevoegd, query is gelukt";
-
-            header("location: wereldwonderenOverzicht.php");
-        
-        }
 
         }catch(PDOException $e){
         $error = $e->getMessage();
@@ -58,29 +56,29 @@ class Wereldwonder extends  Database{
 
 // Wereldwonder verwijderen
     public function wonderVerwijderen($wonderId){
-      
-      try{
+    try {
+        // Eerst foto's verwijderen
+        $this->pdo->prepare("DELETE FROM fotos WHERE wonder_id = :id")
+                  ->execute([':id' => $wonderId]);
 
+        // Daarna documenten verwijderen
+        $this->pdo->prepare("DELETE FROM documenten WHERE wonder_id = :id")
+                  ->execute([':id' => $wonderId]);
+
+        // Daarna pas het wereldwonder zelf verwijderen
         $query = "DELETE FROM " . $this->tableNaam . " WHERE wonder_id = :id";
-        $statement =  $this->pdo->prepare($query);
-
-            $statement->bindParam(':id', $wonderId);
-        
-
-
+        $statement = $this->pdo->prepare($query);
+        $statement->bindParam(':id', $wonderId, PDO::PARAM_INT);
         $statement->execute();
-    
-          header("location: wereldwonderenOverzicht.php");
-            exit();
-        
-        
-        }catch(PDOException $e){
-            
-            
-            echo "Fout bij verwijderen: " . $e->getMessage();
-        }
 
+        header("location: wonderBeheer.php");
+        exit();
+
+    } catch(PDOException $e) {
+        echo "Fout bij verwijderen: " . $e->getMessage();
     }
+}
+
 
 
 
@@ -123,7 +121,10 @@ class Wereldwonder extends  Database{
 
 
     // methode voor wonder info updaten/wonderAanpassen stap2
-    public function wonderUpdaten($wonderId, $naam, $beschrijving, $bouwjaar, $werelddeel, $type, $bestaat_nog, $locatie, $latitude, $longitude, $status, $tags) {
+   public function wonderUpdaten(
+    $wonderId, $naam, $beschrijving, $bouwjaar, $werelddeel, $type,
+    $bestaat_nog, $locatie, $latitude, $longitude, $status, $tags
+) {
     try {
         $query = "UPDATE " . $this->tableNaam . "
                   SET naam = :naam,
@@ -141,13 +142,102 @@ class Wereldwonder extends  Database{
 
         $stmt = $this->pdo->prepare($query);
 
-        // Bind alle parameters, let op numerieke velden
+        // Bind waarden met NULL-checks voor lege velden
+        $stmt->bindValue(':naam', $naam, PDO::PARAM_STR);
+        $stmt->bindValue(':beschrijving', $beschrijving, PDO::PARAM_STR);
+
+        $stmt->bindValue(':bouwjaar', ($bouwjaar !== null && $bouwjaar !== '') ? (int)$bouwjaar : null,
+                         ($bouwjaar !== null && $bouwjaar !== '') ? PDO::PARAM_INT : PDO::PARAM_NULL);
+
+        $stmt->bindValue(':werelddeel', $werelddeel, PDO::PARAM_STR);
+        $stmt->bindValue(':type', $type, PDO::PARAM_STR);
+
+        $stmt->bindValue(':bestaat_nog', ($bestaat_nog !== null && $bestaat_nog !== '') ? (int)$bestaat_nog : null,
+                         ($bestaat_nog !== null && $bestaat_nog !== '') ? PDO::PARAM_INT : PDO::PARAM_NULL);
+
+        $stmt->bindValue(':locatie', $locatie, PDO::PARAM_STR);
+
+        $stmt->bindValue(':latitude', ($latitude !== null && $latitude !== '') ? (float)$latitude : null,
+                         ($latitude !== null && $latitude !== '') ? PDO::PARAM_STR : PDO::PARAM_NULL);
+
+        $stmt->bindValue(':longitude', ($longitude !== null && $longitude !== '') ? (float)$longitude : null,
+                         ($longitude !== null && $longitude !== '') ? PDO::PARAM_STR : PDO::PARAM_NULL);
+
+        $stmt->bindValue(':status', $status, PDO::PARAM_STR);
+        $stmt->bindValue(':tags', $tags, PDO::PARAM_STR);
+
+        $stmt->bindValue(':id', (int)$wonderId, PDO::PARAM_INT);
+
+        // Execute query
+        $result = $stmt->execute();
+
+        // Debug output
+        // echo "<pre style='background:#f2f2f2;border:1px solid #ccc;padding:10px;'>";
+        // echo "DEBUG: wonderUpdaten uitgevoerd voor ID: $wonderId\n";
+        // echo "Query uitgevoerd: \n$query\n";
+        // echo "Bind waarden: ";
+        // print_r([
+        //     'naam' => $naam,
+        //     'beschrijving' => $beschrijving,
+        //     'bouwjaar' => $bouwjaar,
+        //     'werelddeel' => $werelddeel,
+        //     'type' => $type,
+        //     'bestaat_nog' => $bestaat_nog,
+        //     'locatie' => $locatie,
+        //     'latitude' => $latitude,
+        //     'longitude' => $longitude,
+        //     'status' => $status,
+        //     'tags' => $tags,
+        //     'id' => $wonderId
+        // ]);
+        // echo "\nResultaat execute: "; var_dump($result);
+        // echo "\nRijen aangepast: " . $stmt->rowCount();
+        // echo "</pre>";
+
+        // return $result;
+        header("location: wonderBeheer.php");
+
+    } catch (PDOException $e) {
+        echo "<p style='color:red;'>❌ Fout bij updaten: " . $e->getMessage() . "</p>";
+        return false;
+    }
+}
+
+
+
+
+// Wereldwonder volledig updaten, inclusief toegevoegde kolommen
+public function wonderVolledigUpdaten(
+    $wonderId, $naam, $beschrijving, $bouwjaar, $werelddeel, $type, $bestaat_nog,
+    $toegevoegd_door, $aangemaakt_op, $locatie, $latitude, $longitude, $status, $tags
+) {
+    try {
+        $query = "UPDATE " . $this->tableNaam . "
+                  SET naam = :naam,
+                      beschrijving = :beschrijving,
+                      bouwjaar = :bouwjaar,
+                      werelddeel = :werelddeel,
+                      type = :type,
+                      bestaat_nog = :bestaat_nog,
+                      toegevoegd_door = :toegevoegd_door,
+                      aangemaakt_op = :aangemaakt_op,
+                      locatie = :locatie,
+                      latitude = :latitude,
+                      longitude = :longitude,
+                      status = :status,
+                      tags = :tags
+                  WHERE wonder_id = :id";
+
+        $stmt = $this->pdo->prepare($query);
+
         $stmt->bindValue(':naam', $naam, PDO::PARAM_STR);
         $stmt->bindValue(':beschrijving', $beschrijving, PDO::PARAM_STR);
         $stmt->bindValue(':bouwjaar', $bouwjaar !== null ? (int)$bouwjaar : null, $bouwjaar !== null ? PDO::PARAM_INT : PDO::PARAM_NULL);
         $stmt->bindValue(':werelddeel', $werelddeel, PDO::PARAM_STR);
         $stmt->bindValue(':type', $type, PDO::PARAM_STR);
         $stmt->bindValue(':bestaat_nog', $bestaat_nog !== null ? (int)$bestaat_nog : null, $bestaat_nog !== null ? PDO::PARAM_INT : PDO::PARAM_NULL);
+        $stmt->bindValue(':toegevoegd_door', $toegevoegd_door, PDO::PARAM_INT);
+        $stmt->bindValue(':aangemaakt_op', $aangemaakt_op, PDO::PARAM_STR);
         $stmt->bindValue(':locatie', $locatie, PDO::PARAM_STR);
         $stmt->bindValue(':latitude', $latitude !== null ? (float)$latitude : null, $latitude !== null ? PDO::PARAM_STR : PDO::PARAM_NULL);
         $stmt->bindValue(':longitude', $longitude !== null ? (float)$longitude : null, $longitude !== null ? PDO::PARAM_STR : PDO::PARAM_NULL);
@@ -155,71 +245,26 @@ class Wereldwonder extends  Database{
         $stmt->bindValue(':tags', $tags, PDO::PARAM_STR);
         $stmt->bindValue(':id', (int)$wonderId, PDO::PARAM_INT);
 
-        $stmt->execute();
+        $result = $stmt->execute();
 
-        // terug naar de bewerkingspagina zodat je de wijzigingen kan zien
-        header("Location: wereldwonderBewerken.php?wonder_id=" . $wonderId);
-        exit();
+        echo "<pre>DEBUG update uitgevoerd voor ID: $wonderId\n";
+        echo "Bind waarden: "; print_r([
+            'naam'=>$naam, 'beschrijving'=>$beschrijving, 'bouwjaar'=>$bouwjaar, 'werelddeel'=>$werelddeel,
+            'type'=>$type, 'bestaat_nog'=>$bestaat_nog, 'toegevoegd_door'=>$toegevoegd_door,
+            'aangemaakt_op'=>$aangemaakt_op, 'locatie'=>$locatie, 'latitude'=>$latitude,
+            'longitude'=>$longitude, 'status'=>$status, 'tags'=>$tags, 'id'=>$wonderId
+        ]);
+        echo "\nResult execute: "; var_dump($result);
+        echo "\nRijen aangepast: " . $stmt->rowCount() . "</pre>";
+        
+
+        header("location: wereldwonderenOverzicht.php");
 
     } catch (PDOException $e) {
-        echo "Fout bij updaten: " . $e->getMessage();
+        echo "<p style='color:red;'>❌ Fout bij volledig updaten: " . $e->getMessage() . "</p>";
+        return false;
     }
 }
-
-
-    // public function  wonderUpdaten($wonderId, $naam, $beschrijving, $bouwjaar, $werelddeel, $type, $bestaat_nog, $locatie, $latitude, $longitude, $status, $tags) {
-
-    //     try{
-    //       $query = "UPDATE " . $this->tableNaam . " 
-    //         SET naam = :naam, beschrijving = :beschrijving, bouwjaar = :bouwjaar, werelddeel = :werelddeel, 
-    //         type = :type, bestaat_nog = :bestaat_nog, locatie = :locatie, latitude = :latitude, longitude = :longitude, 
-    //         status = :status, tags = :tags 
-    //         WHERE wonder_id = :id";
-              
-           
-    //         $statement =  $this->pdo->prepare($query);
-
-    //        $statement->bindParam(':naam', $naam);
-    //         $statement->bindParam(':beschrijving', $beschrijving);
-    //         $statement->bindParam(':bouwjaar', $bouwjaar);
-    //         $statement->bindParam(':werelddeel', $werelddeel);
-    //         $statement->bindParam(':type', $type);
-    //         $statement->bindParam(':bestaat_nog', $bestaat_nog);
-    //         $statement->bindParam(':locatie', $locatie);
-    //         $statement->bindParam(':latitude', $latitude);
-    //         $statement->bindParam(':longitude', $longitude);
-    //         $statement->bindParam(':status', $status);
-    //         $statement->bindParam(':tags', $tags);
-    //         $statement->bindParam(':id', $wonderId);
-
-    //         $statement->execute();
-          
-    //               // vergeet dit nooit meer !!!!!!!!!!!!!!!!
-           
-
-            
-
-    //         if($statement){
-           
-    //             // test
-            
-    //             // stuur de gebuiker weer naar wonderInfo pagina zodat hij de aanpassingen kan zien.
-    //             header("location: wonderInfo.php?id=$wonderId");
-             
-           
-                
-            
-    //         }
-
-    //     }catch(PDOException $e){
-    //     echo "Fout bij updaten: " . $e->getMessage();
-    //     }
-    // }
-
-
-
-
-
 
 
 
