@@ -11,7 +11,7 @@ if(!isset($_SESSION['isIngelogd']) || $_SESSION['isIngelogd'] !== true){
 
 
 $rol = strtolower($_SESSION['rol'] ?? '');
-$wonder_id = $_POST['wonder_id'] ?? $_GET['wonder_id'] ?? null;
+$wonder_id = $_POST['wonder_id'] ?? $_GET['id'] ?? null;
 
 if(!$wonder_id){
     die("Geen wereldwonder geselecteerd.");
@@ -37,7 +37,7 @@ try {
 // rechten per rol
 $rechten = [
     "onderzoeker" => ["naam", "beschrijving"],
-    "archivist"   => ["bouwjaar", "bestaat_nog", "status", "tags"],
+    "archivaris"   => ["bouwjaar", "bestaat_nog", "status", "tags"],
     "beheerder"   => ["naam","beschrijving","bouwjaar","bestaat_nog","status","tags","wereldeel","locatie","latitude","longitude"]
 ];
 
