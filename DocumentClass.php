@@ -22,11 +22,11 @@ class Document extends Database {
         ]);
 
         // DEBUG
-        echo "<pre style='background:#f2f2f2;border:1px solid #ccc;padding:10px;'>";
-        echo "DEBUG: documentToevoegen uitgevoerd voor wonder_id: $wonderId\n";
-        echo "Pad: $bestandspad, type: $type, grootte: $grootte\n";
-        echo "Resultaat execute: "; var_dump($result);
-        echo "</pre>";
+        // echo "<pre style='background:#f2f2f2;border:1px solid #ccc;padding:10px;'>";
+        // echo "DEBUG: documentToevoegen uitgevoerd voor wonder_id: $wonderId\n";
+        // echo "Pad: $bestandspad, type: $type, grootte: $grootte\n";
+        // echo "Resultaat execute: "; var_dump($result);
+        // echo "</pre>";
 
         return $result;
 

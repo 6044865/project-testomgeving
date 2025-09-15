@@ -124,6 +124,16 @@ $naam = $_SESSION['username'] ?? 'Gast';
             </div>
         <?php endif; ?>
 
+         <?php if ($rol === "archivaris"): ?>
+            
+            <div class="card">
+             
+            <p> Je mag alleen bepaalde info wijzigen</p>
+                <a href="archivarisBeheer.php">Wonder bewerken</a></div>
+               
+            </div>
+        <?php endif; ?>
+
         <?php if ($rol === "beheerder"): ?>
             <div class="card">
              

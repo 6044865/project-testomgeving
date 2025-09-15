@@ -1,53 +1,36 @@
-
 <!DOCTYPE html>
-<html lang="en">
-
+<html lang="nl">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>wereldwonderen</title>
-    <script src="https://kit.fontawesome.com/0c7c27ff53.js" crossorigin="anonymous"></script>
+    <title>Bewerk Wereldwonder</title>
     <link rel="stylesheet" href="./css/stylesheet.css">
-    <script src="../project-testomgeving/js/index.js" defer></script>
-  
-    <meta name="description" 
-      content="Codex Mundi is een digitaal archief van de 21 wereldwonderen. Ontdek informatie, foto's, verhalen en geschiedenis van de klassieke, nieuwe en natuurlijke wereldwonderen.">
-<meta name="keywords" 
-      content="wereldwonderen, 7 wereldwonderen, nieuwe wereldwonderen, klassieke wereldwonderen, geschiedenis, cultuur, Codex Mundi, digitaal archief, erfgoed">
-
-
-
-    <meta name="author" content="A.Alhaji, G.Verpaalen">
-
+    <script src="https://kit.fontawesome.com/0c7c27ff53.js" crossorigin="anonymous"></script>
 </head>
 
 <?php
 require_once "includes/auth.php"; // sessie & login check
-
-
-// Alleen beheerders mogen aanpassen
-if ($rol !== 'beheerder') {
-    die("❌ Toegang geweigerd. Alleen voor beheerders.");
-}
-
 require_once "./classWereldwonder.php";
+require_once "./DocumentClass.php";
+
 $ww = new Wereldwonder();
+$doc = new Document();
 $message = "";
+
+// Alleen beheerder en archivaris
+if (!in_array($rol, ['beheerder', 'archivaris'])) {
+    die("❌ Toegang geweigerd.");
+}
 
 // ID ophalen uit GET
 $wonderId = isset($_GET['id']) ? (int)$_GET['id'] : 0;
+if ($wonderId <= 0) die("❌ Ongeldig wonder ID.");
 
-if ($wonderId <= 0) {
-    die("❌ Ongeldig wonder ID.");
-}
-
-// Haal de details van het wonder op
+// Haal details van het wonder
 $selectedWonder = $ww->getWonderMetDetails($wonderId);
-if (!$selectedWonder) {
-    die("❌ Wereldwonder niet gevonden.");
-}
+if (!$selectedWonder) die("❌ Wereldwonder niet gevonden.");
 
-// Handle form submission
+// Form submission: wereldwonder updaten
 if (isset($_POST['submit_form'])) {
     $naam = $_POST['naam'] ?? '';
     $beschrijving = $_POST['beschrijving'] ?? '';
@@ -61,55 +44,99 @@ if (isset($_POST['submit_form'])) {
     $status = $_POST['status'] ?? null;
     $tags = $_POST['tags'] ?? null;
 
-    $result = $ww->wonderUpdaten(
-        $wonderId, $naam, $beschrijving, $bouwjaar, $werelddeel,
-        $type, $bestaat_nog, $locatie, $latitude, $longitude, $status, $tags
-    );
+    if ($rol === 'beheerder') {
+        $result = $ww->wonderUpdaten(
+            $wonderId, $naam, $beschrijving, $bouwjaar, $werelddeel,
+            $type, $bestaat_nog, $locatie, $latitude, $longitude, $status, $tags
+        );
+    } elseif ($rol === 'archivaris') {
+        $result = $ww->wonderUpdateArchivaris(
+            $wonderId, $bouwjaar, $bestaat_nog, $locatie, $latitude, $longitude
+        );
+    }
 
     if ($result) {
-        $message = "<p style='color:green;'>✅ Wereldwonder succesvol bijgewerkt!</p>";
-        // Herlaad details
+        $message .= "<p style='color:green;'>✅ Wereldwonder succesvol bijgewerkt!</p>";
         $selectedWonder = $ww->getWonderMetDetails($wonderId);
     } else {
-        $message = "<p style='color:red;'>❌ Fout bij bijwerken.</p>";
+        $message .= "<p style='color:red;'>❌ Fout bij bijwerken.</p>";
+    }
+
+    // Document upload (voor archivaris & beheerder)
+    if (isset($_FILES['document']) && $_FILES['document']['error'] === UPLOAD_ERR_OK) {
+        $bestand = $_FILES['document'];
+        $uploadDir = "uploads/";
+        if (!is_dir($uploadDir)) mkdir($uploadDir, 0777, true);
+
+        $bestandPad = $uploadDir . time() . "_" . basename($bestand['name']);
+        $bestandGrootte = $bestand['size'];
+        $bestandType = $bestand['type'];
+        $maxGrootte = 5 * 1024 * 1024; // 5MB
+
+        if ($doc->checkBestandsgrootte($bestandGrootte, $maxGrootte)) {
+            if (move_uploaded_file($bestand['tmp_name'], $bestandPad)) {
+                $toegevoegd_door = $gebruiker_id;
+                $toegevoegd_naam = $naam;
+
+                $doc->documentToevoegen(
+                    $wonderId,
+                    $bestandPad,
+                    $bestandType,
+                    $bestandGrootte,
+                    $toegevoegd_door,
+                    $toegevoegd_naam
+                );
+                $message .= "<p style='color:green;'>✅ Document succesvol toegevoegd!</p>";
+            } else {
+                $message .= "<p style='color:red;'>❌ Uploaden mislukt.</p>";
+            }
+        } else {
+            $message .= "<p style='color:red;'>❌ Bestand te groot (max 5MB).</p>";
+        }
     }
 }
+
+// Haal alle documenten van dit wonder
+$documenten = $doc->getDocumentenPerWonder($wonderId);
 ?>
 
 <body>
-    
-<?php
-include "./includes/header.php";
-?>
+<?php include "./includes/header.php"; ?>
 <main>
 <h1>Bewerk Wereldwonder: <?= htmlspecialchars($selectedWonder['naam']) ?></h1>
-
 <?= $message ?>
 
-<form method="post">
-    <label>Naam:</label>
-    <input type="text" name="naam" value="<?= htmlspecialchars($selectedWonder['naam'] ?? '') ?>" required>
+<form method="post" enctype="multipart/form-data">
+    <?php if ($rol === 'beheerder'): ?>
+        <label>Naam:</label>
+        <input type="text" name="naam" value="<?= htmlspecialchars($selectedWonder['naam'] ?? '') ?>" required>
 
-    <label>Beschrijving:</label>
-    <textarea name="beschrijving" required><?= htmlspecialchars($selectedWonder['beschrijving'] ?? '') ?></textarea>
+        <label>Beschrijving:</label>
+        <textarea name="beschrijving" required><?= htmlspecialchars($selectedWonder['beschrijving'] ?? '') ?></textarea>
 
+        <label>Werelddeel:</label>
+        <input type="text" name="werelddeel" value="<?= htmlspecialchars($selectedWonder['werelddeel'] ?? '') ?>">
+
+        <label>Type:</label>
+        <select name="type" required>
+            <option value="klassiek" <?= ($selectedWonder['type'] ?? '') === 'klassiek' ? 'selected' : '' ?>>Klassiek</option>
+            <option value="modern" <?= ($selectedWonder['type'] ?? '') === 'modern' ? 'selected' : '' ?>>Modern</option>
+            <option value="natuurlijk" <?= ($selectedWonder['type'] ?? '') === 'natuurlijk' ? 'selected' : '' ?>>Natuurlijk</option>
+        </select>
+
+        <label>Status:</label>
+        <input type="text" name="status" value="<?= htmlspecialchars($selectedWonder['status'] ?? '') ?>">
+
+        <label>Tags:</label>
+        <input type="text" name="tags" value="<?= htmlspecialchars($selectedWonder['tags'] ?? '') ?>">
+    <?php endif; ?>
+
+    <!-- Velden die beide mogen aanpassen -->
     <label>Bouwjaar:</label>
     <input type="number" name="bouwjaar" value="<?= htmlspecialchars($selectedWonder['bouwjaar'] ?? '') ?>">
 
-    <label>Werelddeel:</label>
-    <input type="text" name="werelddeel" value="<?= htmlspecialchars($selectedWonder['werelddeel'] ?? '') ?>">
-
-    <label>Type:</label>
-    <select name="type" required>
-        <option value="">-- Kies type --</option>
-        <option value="klassiek" <?= ($selectedWonder['type'] ?? '') === 'klassiek' ? 'selected' : '' ?>>Klassiek</option>
-        <option value="modern" <?= ($selectedWonder['type'] ?? '') === 'modern' ? 'selected' : '' ?>>Modern</option>
-        <option value="natuurlijk" <?= ($selectedWonder['type'] ?? '') === 'natuurlijk' ? 'selected' : '' ?>>Natuurlijk</option>
-    </select>
-
     <label>Bestaat nog:</label>
     <select name="bestaat_nog">
-        <option value="">-- select --</option>
         <option value="1" <?= ($selectedWonder['bestaat_nog'] ?? '') == 1 ? 'selected' : '' ?>>Ja</option>
         <option value="0" <?= ($selectedWonder['bestaat_nog'] ?? '') == 0 ? 'selected' : '' ?>>Nee</option>
     </select>
@@ -123,17 +150,31 @@ include "./includes/header.php";
     <label>Longitude:</label>
     <input type="text" name="longitude" value="<?= htmlspecialchars($selectedWonder['longitude'] ?? '') ?>">
 
-    <label>Status:</label>
-    <input type="text" name="status" value="<?= htmlspecialchars($selectedWonder['status'] ?? '') ?>">
-
-    <label>Tags:</label>
-    <input type="text" name="tags" value="<?= htmlspecialchars($selectedWonder['tags'] ?? '') ?>">
+    <hr>
+    <h2>Document toevoegen</h2>
+    <input type="file" name="document">
+    <p>Max. bestandsgrootte: 5MB</p>
 
     <button type="submit" name="submit_form">Opslaan</button>
 </form>
+
+<hr>
+<h2>Bestaande documenten</h2>
+<?php if ($documenten): ?>
+    <ul>
+    <?php foreach ($documenten as $d): ?>
+        <li>
+            <a href="<?= htmlspecialchars($d['bestandspad']) ?>" target="_blank">
+                <?= htmlspecialchars(basename($d['bestandspad'])) ?> (<?= htmlspecialchars($d['type']) ?>)
+            </a>
+        </li>
+    <?php endforeach; ?>
+    </ul>
+<?php else: ?>
+    <p>Geen documenten toegevoegd.</p>
+<?php endif; ?>
+
 </main>
-<?php
-include "./includes/footer.php";
-?>
+<?php include "./includes/footer.php"; ?>
 </body>
 </html>

@@ -537,6 +537,41 @@ public function haalAlleWonderenOverzicht($zoekterm, $werelddeel, $bestaatNog, $
     }
 }
 
+
+// wonder update voor archivaris
+public function wonderUpdateArchivaris($wonderId, $bouwjaar, $bestaat_nog, $locatie, $latitude, $longitude) {
+    try {
+        $query = "UPDATE " . $this->tableNaam . "
+                  SET bouwjaar = :bouwjaar,
+                      bestaat_nog = :bestaat_nog,
+                      locatie = :locatie,
+                      latitude = :latitude,
+                      longitude = :longitude
+                  WHERE wonder_id = :id";
+
+        $stmt = $this->pdo->prepare($query);
+
+        $stmt->bindValue(':bouwjaar', ($bouwjaar !== null && $bouwjaar !== '') ? (int)$bouwjaar : null,
+                         ($bouwjaar !== null && $bouwjaar !== '') ? PDO::PARAM_INT : PDO::PARAM_NULL);
+        $stmt->bindValue(':bestaat_nog', ($bestaat_nog !== null && $bestaat_nog !== '') ? (int)$bestaat_nog : null,
+                         ($bestaat_nog !== null && $bestaat_nog !== '') ? PDO::PARAM_INT : PDO::PARAM_NULL);
+        $stmt->bindValue(':locatie', $locatie, PDO::PARAM_STR);
+        $stmt->bindValue(':latitude', ($latitude !== null && $latitude !== '') ? (float)$latitude : null,
+                         ($latitude !== null && $latitude !== '') ? PDO::PARAM_STR : PDO::PARAM_NULL);
+        $stmt->bindValue(':longitude', ($longitude !== null && $longitude !== '') ? (float)$longitude : null,
+                         ($longitude !== null && $longitude !== '') ? PDO::PARAM_STR : PDO::PARAM_NULL);
+
+        $stmt->bindValue(':id', (int)$wonderId, PDO::PARAM_INT);
+
+        return $stmt->execute();
+
+    } catch (PDOException $e) {
+        echo "<p style='color:red;'>❌ Fout bij archivaris-update: " . $e->getMessage() . "</p>";
+        return false;
+    }
+}
+
+
  }
 
 
