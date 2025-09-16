@@ -1,19 +1,12 @@
-<!DOCTYPE html>
-<html lang="nl">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bewerk Wereldwonder</title>
-    <link rel="stylesheet" href="./css/stylesheet.css">
-    <script src="https://kit.fontawesome.com/0c7c27ff53.js" crossorigin="anonymous"></script>
-</head>
-
 <?php
+// wonderBeheer.php
 require_once "includes/auth.php"; // sessie & login check
 require_once "./classWereldwonder.php";
+require_once "./FotoClass.php";
 require_once "./DocumentClass.php";
 
 $ww = new Wereldwonder();
+$foto = new Foto();
 $doc = new Document();
 $message = "";
 
@@ -30,7 +23,41 @@ if ($wonderId <= 0) die("❌ Ongeldig wonder ID.");
 $selectedWonder = $ww->getWonderMetDetails($wonderId);
 if (!$selectedWonder) die("❌ Wereldwonder niet gevonden.");
 
+// Stel max grootte voor documenten in (beheerder kan dit later aanpassen)
+$maxGrootteDoc = 5 * 1024 * 1024; // 5MB
+
+// ================================
+// Verwijder foto
+// ================================
+if (isset($_POST['delete_foto_id'])) {
+    $fotoId = (int)$_POST['delete_foto_id'];
+    if ($foto->fotoVerwijderen($fotoId)) {
+        $message .= "<p style='color:green;'>✅ Foto verwijderd!</p>";
+        $selectedWonder = $ww->getWonderMetDetails($wonderId); // vernieuw details
+    } else {
+        $message .= "<p style='color:red;'>❌ Foto kon niet verwijderd worden.</p>";
+    }
+}
+
+// ================================
+// Verwijder document
+// ================================
+
+if (isset($_GET['delete_doc'])) {
+    $docId = (int)$_GET['delete_doc'];
+
+    // Hier roep je de methode aan en geef je feedback
+    if ($doc->documentVerwijderen($docId)) {
+        $message .= "<p style='color:green;'>✅ Document verwijderd!</p>";
+    } else {
+        $message .= "<p style='color:red;'>❌ Document niet gevonden of kon niet verwijderd worden.</p>";
+    }
+}
+
+
+// ================================
 // Form submission: wereldwonder updaten
+// ================================
 if (isset($_POST['submit_form'])) {
     $naam = $_POST['naam'] ?? '';
     $beschrijving = $_POST['beschrijving'] ?? '';
@@ -62,18 +89,44 @@ if (isset($_POST['submit_form'])) {
         $message .= "<p style='color:red;'>❌ Fout bij bijwerken.</p>";
     }
 
-    // Document upload (voor archivaris & beheerder)
-    if (isset($_FILES['document']) && $_FILES['document']['error'] === UPLOAD_ERR_OK) {
-        $bestand = $_FILES['document'];
-        $uploadDir = "uploads/";
+    // ================================
+    // Foto upload
+    // ================================
+    if (isset($_FILES['foto']) && $_FILES['foto']['error'] === UPLOAD_ERR_OK) {
+        $bestand = $_FILES['foto'];
+        $uploadDir = "uploads/fotos/";
         if (!is_dir($uploadDir)) mkdir($uploadDir, 0777, true);
 
         $bestandPad = $uploadDir . time() . "_" . basename($bestand['name']);
         $bestandGrootte = $bestand['size'];
         $bestandType = $bestand['type'];
-        $maxGrootte = 5 * 1024 * 1024; // 5MB
 
-        if ($doc->checkBestandsgrootte($bestandGrootte, $maxGrootte)) {
+        if ($bestandGrootte <= $maxGrootteDoc) { // max grootte check
+            if (move_uploaded_file($bestand['tmp_name'], $bestandPad)) {
+                $foto->fotoToevoegen($wonderId, $bestandPad, 0);
+                $message .= "<p style='color:green;'>✅ Foto succesvol toegevoegd!</p>";
+                $selectedWonder = $ww->getWonderMetDetails($wonderId);
+            } else {
+                $message .= "<p style='color:red;'>❌ Foto upload mislukt.</p>";
+            }
+        } else {
+            $message .= "<p style='color:red;'>❌ Foto te groot (max " . ($maxGrootteDoc/1024/1024) . " MB).</p>";
+        }
+    }
+
+    // ================================
+    // Document upload
+    // ================================
+    if (isset($_FILES['document']) && $_FILES['document']['error'] === UPLOAD_ERR_OK) {
+        $bestand = $_FILES['document'];
+        $uploadDir = "uploads/documenten/";
+        if (!is_dir($uploadDir)) mkdir($uploadDir, 0777, true);
+
+        $bestandPad = $uploadDir . time() . "_" . basename($bestand['name']);
+        $bestandGrootte = $bestand['size'];
+        $bestandType = $bestand['type'];
+
+        if ($doc->checkBestandsgrootte($bestandGrootte, $maxGrootteDoc)) {
             if (move_uploaded_file($bestand['tmp_name'], $bestandPad)) {
                 $toegevoegd_door = $gebruiker_id;
                 $toegevoegd_naam = $naam;
@@ -91,15 +144,25 @@ if (isset($_POST['submit_form'])) {
                 $message .= "<p style='color:red;'>❌ Uploaden mislukt.</p>";
             }
         } else {
-            $message .= "<p style='color:red;'>❌ Bestand te groot (max 5MB).</p>";
+            $message .= "<p style='color:red;'>❌ Document te groot (max " . ($maxGrootteDoc/1024/1024) . " MB).</p>";
         }
     }
 }
 
 // Haal alle documenten van dit wonder
 $documenten = $doc->getDocumentenPerWonder($wonderId);
+$fotos = $foto->getFotosPerWonder($wonderId);
 ?>
 
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Bewerk Wereldwonder</title>
+<link rel="stylesheet" href="./css/stylesheet.css">
+<script src="https://kit.fontawesome.com/0c7c27ff53.js" crossorigin="anonymous"></script>
+</head>
 <body>
 <?php include "./includes/header.php"; ?>
 <main>
@@ -151,12 +214,34 @@ $documenten = $doc->getDocumentenPerWonder($wonderId);
     <input type="text" name="longitude" value="<?= htmlspecialchars($selectedWonder['longitude'] ?? '') ?>">
 
     <hr>
+    <h2>Foto toevoegen</h2>
+    <input type="file" name="foto">
+    <p>Max. bestandsgrootte: <?= ($maxGrootteDoc/1024/1024) ?> MB</p>
+
     <h2>Document toevoegen</h2>
     <input type="file" name="document">
-    <p>Max. bestandsgrootte: 5MB</p>
+    <p>Max. bestandsgrootte: <?= ($maxGrootteDoc/1024/1024) ?> MB</p>
 
     <button type="submit" name="submit_form">Opslaan</button>
 </form>
+
+<hr>
+<h2>Bestaande foto's</h2>
+<?php if ($fotos): ?>
+    <ul>
+    <?php foreach ($fotos as $f): ?>
+        <li>
+            <img src="<?= htmlspecialchars($f['bestandspad']) ?>" alt="" style="max-width:100px;">
+            <form method="post" style="display:inline;">
+                <input type="hidden" name="delete_foto_id" value="<?= $f['foto_id'] ?>">
+                <button type="submit">🗑️ Verwijder</button>
+            </form>
+        </li>
+    <?php endforeach; ?>
+    </ul>
+<?php else: ?>
+    <p>Geen foto’s toegevoegd.</p>
+<?php endif; ?>
 
 <hr>
 <h2>Bestaande documenten</h2>
@@ -167,6 +252,10 @@ $documenten = $doc->getDocumentenPerWonder($wonderId);
             <a href="<?= htmlspecialchars($d['bestandspad']) ?>" target="_blank">
                 <?= htmlspecialchars(basename($d['bestandspad'])) ?> (<?= htmlspecialchars($d['type']) ?>)
             </a>
+            <form method="post" style="display:inline;">
+                <input type="hidden" name="delete_document_id" value="<?= $d['document_id'] ?>">
+                <button type="submit">🗑️ Verwijder</button>
+            </form>
         </li>
     <?php endforeach; ?>
     </ul>

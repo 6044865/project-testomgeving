@@ -102,14 +102,15 @@ $naam = $_SESSION['username'] ?? 'Gast';
 
     <div class="cards">
         <?php if ($rol === "onderzoeker"): ?>
-            <div class="card">
+                  <div class="card">
               
-                  <a href="">Wereldwonderen toevoegen</a>
+                  <a href="onderzoekerBeheer.php">Eigen wereldwonderen beheren</a>
                   </div>
             <div class="card">
               
-                <a href=""> Eigen wereldwonderen aanpassen</a>
-            </div>
+                  <a href="toevoegenWonderOnderzoeker.php">Wereldwonderen toevoegen</a>
+                  </div>
+         
         <?php endif; ?>
 
         <?php if ($rol === "redacteur"): ?>

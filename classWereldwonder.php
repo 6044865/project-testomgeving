@@ -51,6 +51,110 @@ if ($statement->rowCount() > 0) {
     
 
 
+// onderzoeker toevoegen
+       public function wonderToevoegenOnderzoeker(
+    $naam, $beschrijving, $bouwjaar, $werelddeel, $type, $bestaat_nog,
+    $toegevoegd_door, $locatie, $latitude, $longitude
+) {
+    try {
+        $query = "INSERT INTO wereldwonderen
+                  (naam, beschrijving, bouwjaar, werelddeel, type, bestaat_nog, toegevoegd_door, locatie, latitude, longitude)
+                  VALUES (:naam, :beschrijving, :bouwjaar, :werelddeel, :type, :bestaat_nog, :toegevoegd_door, :locatie, :latitude, :longitude)";
+        $stmt = $this->pdo->prepare($query);
+        $stmt->execute([
+            ':naam' => $naam,
+            ':beschrijving' => $beschrijving,
+            ':bouwjaar' => $bouwjaar,
+            ':werelddeel' => $werelddeel,
+            ':type' => $type,
+            ':bestaat_nog' => $bestaat_nog,
+            ':toegevoegd_door' => $toegevoegd_door,
+            ':locatie' => $locatie,
+            ':latitude' => $latitude,
+            ':longitude' => $longitude
+        ]);
+
+        // ✅ hier ID teruggeven
+        header("location: onderzoekerBeheer.php");
+
+    } catch (PDOException $e) {
+        echo "❌ Fout bij toevoegen onderzoeker: " . $e->getMessage();
+        return false;
+    }
+}
+
+// onderzoeker kan wonderen aanpassen ,, niet alles maar bepaalde velden
+public function wonderUpdateOnderzoeker($id, $naam, $beschrijving, $locatie, $latitude, $longitude) {
+    $query = "UPDATE wereldwonderen 
+              SET naam = :naam, beschrijving = :beschrijving, locatie = :locatie, latitude = :latitude, longitude = :longitude
+              WHERE wonder_id = :id";
+    $stmt = $this->pdo->prepare($query);
+    return $stmt->execute([
+        ':id' => $id,
+        ':naam' => $naam,
+        ':beschrijving' => $beschrijving,
+        ':locatie' => $locatie,
+        ':latitude' => $latitude,
+        ':longitude' => $longitude
+    ]);
+}
+
+
+// Onderzoeker mag ALLES van zijn eigen wonder aanpassen (behalve status/tags)
+public function wonderUpdateOnderzoekerVolledig(
+    $wonderId, $gebruikerId,
+    $naam, $beschrijving, $bouwjaar, $werelddeel, $type,
+    $bestaat_nog, $locatie, $latitude, $longitude
+) {
+    try {
+        // ✅ Check of dit wonder wel echt van deze onderzoeker is
+        $check = $this->pdo->prepare("SELECT wonder_id FROM " . $this->tableNaam . " WHERE wonder_id = :id AND toegevoegd_door = :gebruiker");
+        $check->execute([':id' => $wonderId, ':gebruiker' => $gebruikerId]);
+        if (!$check->fetch()) {
+            return false; // ❌ niet van hem
+        }
+
+        // ✅ Update query
+        $query = "UPDATE " . $this->tableNaam . "
+                  SET naam = :naam,
+                      beschrijving = :beschrijving,
+                      bouwjaar = :bouwjaar,
+                      werelddeel = :werelddeel,
+                      type = :type,
+                      bestaat_nog = :bestaat_nog,
+                      locatie = :locatie,
+                      latitude = :latitude,
+                      longitude = :longitude
+                  WHERE wonder_id = :id";
+
+        $stmt = $this->pdo->prepare($query);
+
+        return $stmt->execute([
+            ':id' => $wonderId,
+            ':naam' => $naam,
+            ':beschrijving' => $beschrijving,
+            ':bouwjaar' => $bouwjaar,
+            ':werelddeel' => $werelddeel,
+            ':type' => $type,
+            ':bestaat_nog' => $bestaat_nog,
+            ':locatie' => $locatie,
+            ':latitude' => $latitude,
+            ':longitude' => $longitude
+        ]);
+    } catch (PDOException $e) {
+        echo "<p style='color:red;'>❌ Fout bij onderzoeker-update: " . $e->getMessage() . "</p>";
+        return false;
+    }
+}
+
+
+ 
+// Alle wonderen van een specifieke gebruiker
+public function getWonderenDoorGebruiker($gebruikerId) {
+    $stmt = $this->pdo->prepare("SELECT * FROM wereldwonderen WHERE toegevoegd_door = :id ORDER BY wonder_id DESC");
+    $stmt->execute([':id' => $gebruikerId]);
+    return $stmt->fetchAll(PDO::FETCH_ASSOC);
+}
 
 
 

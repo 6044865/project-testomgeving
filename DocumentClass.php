@@ -37,16 +37,74 @@ class Document extends Database {
 }
 
 
-    // Document verwijderen
-    public function documentVerwijderen($docId) {
-        try {
+// 
+// Document toevoegen met groottecontrole
+public function documentToevoegenBeheerder($wonderId, $bestandspad, $type, $grootte, $toegevoegd_door, $toegevoegd_naam, $maxGrootteMB = 5) {
+    try {
+        // Controleer bestandsgrootte
+        if (!$this->checkBestandsgrootte($grootte, $maxGrootteMB * 1024 * 1024)) {
+            throw new Exception("Bestand te groot! Maximaal {$maxGrootteMB} MB toegestaan.");
+        }
+
+        $query = "INSERT INTO " . $this->tableNaam . " 
+                  (wonder_id, bestandspad, type, grootte, toegevoegd_door, toegevoegd_naam) 
+                  VALUES (:wonder_id, :bestandspad, :type, :grootte, :toegevoegd_door, :toegevoegd_naam)";
+        $stmt = $this->pdo->prepare($query);
+        $stmt->execute([
+            ':wonder_id' => $wonderId,
+            ':bestandspad' => $bestandspad,
+            ':type' => $type,
+            ':grootte' => $grootte,
+            ':toegevoegd_door' => $toegevoegd_door,
+            ':toegevoegd_naam' => $toegevoegd_naam
+        ]);
+
+        return true;
+
+    } catch (Exception $e) {
+        echo "<p style='color:red;'>❌ " . $e->getMessage() . "</p>";
+        return false;
+    } catch (PDOException $e) {
+        echo "<p style='color:red;'>❌ Fout bij toevoegen document: " . $e->getMessage() . "</p>";
+        return false;
+    }
+}
+
+
+    // DocumentClass.php
+public function documentVerwijderen($docId) {
+    try {
+        // Haal bestandspad op
+        $query = "SELECT bestandspad FROM " . $this->tableNaam . " WHERE document_id = :id";
+        $stmt = $this->pdo->prepare($query);
+        $stmt->execute([':id' => $docId]);
+        $document = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        if ($document) {
+            $bestandspad = $document['bestandspad'];
+
+            // Verwijder fysiek bestand als het bestaat
+            if (file_exists($bestandspad)) {
+                unlink($bestandspad);
+            } else {
+                // Bestand bestaat niet, kan zijn verwijderd buiten de app
+                // Log dit evt, maar verwijder record alsnog
+            }
+
+            // Record verwijderen
             $query = "DELETE FROM " . $this->tableNaam . " WHERE document_id = :id";
             $stmt = $this->pdo->prepare($query);
             $stmt->execute([':id' => $docId]);
-        } catch (PDOException $e) {
-            echo "❌ Fout bij document verwijderen: " . $e->getMessage();
+
+            return true; // Altijd true als record verwijderd is
         }
+        return false; // Document niet gevonden
+    } catch (PDOException $e) {
+        echo "❌ Fout bij document verwijderen: " . $e->getMessage();
+        return false;
     }
+}
+
 
     // Alle documenten per wonder ophalen
     public function getDocumentenPerWonder($wonderId) {
