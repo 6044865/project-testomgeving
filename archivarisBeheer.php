@@ -4,7 +4,7 @@ require_once "./classWereldwonder.php";
 
 // Alleen archivarissen mogen deze pagina gebruiken
 if ($rol !== 'archivaris') {
-    die("❌ Toegang geweigerd. Alleen voor archivarissen.");
+    die("❌ Toegang geweigerd. Alleen voor archivisten.");
 }
 
 $ww = new Wereldwonder();
@@ -66,7 +66,7 @@ $wonderen = $ww->getAlleWonderen();
                     <h3><?= htmlspecialchars($w['naam']); ?></h3>
               
                     <div class="actions">
-                        <a href="bewerkWonder.php?id=<?= $w['wonder_id']; ?>" class="bewerken">✏️ Bewerken</a>
+                        <a href="wereldwonderaanpassen.php?id=<?= $w['wonder_id']; ?>" class="bewerken">✏️ Bewerken</a>
                     </div>
                 </div>
             <?php endforeach; ?>

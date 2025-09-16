@@ -18,7 +18,7 @@ if(!$wonder_id){
 // rechten per rol
 $rechten = [
     "onderzoeker" => ["naam", "beschrijving"],
-    "archivist"   => ["bouwjaar", "bestaat_nog", "status", "tags"],
+    "archivaris"   => ["bouwjaar", "bestaat_nog", "status", "tags"],
     "beheerder"   => ["naam","beschrijving","bouwjaar","bestaat_nog","status","tags","wereldeel","locatie","latitude","longitude"]
 ];
 
@@ -43,7 +43,7 @@ if(empty($velden)){
     die("U heeft geen rechten om dit wereldwonder aan te passen.");
 }
 
-$sql = "UPDATE wereldwonderen SET ".implode(", ", $velden)." WHERE id = ?";
+$sql = "UPDATE wereldwonderen SET ".implode(", ", $velden)." WHERE wonder_id = ?";
 $waardes[] = $wonder_id;
 
 try {
@@ -52,7 +52,7 @@ try {
     $stmt = $conn->prepare($sql);
     $stmt->execute($waardes);
 
-    header("location: wereldwonderOverzicht.php?success=1");
+    header("location: wereldwonderenOverzicht.php?success=1");
     exit();
 } catch (PDOException $e) {
     die("Fout bij opslaan: " . $e->getMessage());
