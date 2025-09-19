@@ -136,4 +136,29 @@ public function documentVerwijderen($docId) {
     public function checkBestandsgrootte($grootte, $maxToegestaan) {
         return $grootte <= $maxToegestaan;
     }
+
+
+
+
+    public function getOngekeurdeDocs() {
+    try {
+        $stmt = $this->pdo->query("SELECT * FROM documenten WHERE status_toevoeging = 0");
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    } catch (PDOException $e) {
+        return [];
+    }
+}
+
+public function updateStatus($docId, $status) {
+    try {
+        $stmt = $this->pdo->prepare("UPDATE documenten SET status_toevoeging = :status WHERE document_id = :id");
+        return $stmt->execute([
+            ':status' => $status,
+            ':id'     => $docId
+        ]);
+    } catch (PDOException $e) {
+        return false;
+    }
+}
+
 }

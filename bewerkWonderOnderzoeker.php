@@ -53,8 +53,9 @@ if (isset($_POST['upload_foto']) && isset($_FILES['foto']) && $_FILES['foto']['e
 
     if (move_uploaded_file($_FILES['foto']['tmp_name'], $bestandPad)) {
         // Voeg foto toe in database, standaard 0 = niet goedgekeurd
-        $foto->fotoToevoegen($wonderId, $bestandPad, 0);
-        $message .= "<p style='color:green;'>✅ Foto succesvol toegevoegd!</p>";
+        $foto->fotoToevoegenOnderzoeker($wonderId, $bestandPad, $gebruiker_id);
+
+        $message .= "<p style='color:green;'>✅ Foto succesvol toegevoegd! Wacht op goedkeuring door redacteur of beheerder.</p>";
     } else {
         $message .= "<p style='color:red;'>❌ Fout bij uploaden van de foto.</p>";
     }
@@ -69,7 +70,8 @@ if (isset($_POST['delete_foto_id'])) {
 
 // Haal documenten en fotos op
 $documenten = $doc->getDocumentenPerWonder($wonderId);
-$fotos = $foto->getFotosPerWonder($wonderId);
+$fotos = $foto->getFotosForOnderzoeker($wonderId, $gebruiker_id);
+
 ?>
 
 <!DOCTYPE html>
@@ -124,10 +126,10 @@ $fotos = $foto->getFotosPerWonder($wonderId);
     <?php foreach ($fotos as $f): ?>
         <li>
             <img src="<?= htmlspecialchars($f['bestandspad']) ?>" alt="" style="max-width:150px;">
-            <form method="post" style="display:inline;">
-                <input type="hidden" name="delete_foto_id" value="<?= $f['foto_id'] ?>">
-                <button type="submit">🗑️ Verwijderen</button>
-            </form>
+            <form method="post" style="display:inline;" onsubmit="return confirm('Weet je zeker dat je deze foto wilt verwijderen?');">
+    <input type="hidden" name="delete_foto_id" value="<?= $f['foto_id'] ?>">
+    <button type="submit">🗑️ Verwijderen</button>
+</form>
         </li>
     <?php endforeach; ?>
     </ul>

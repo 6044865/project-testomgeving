@@ -137,7 +137,7 @@
          font-size: 0.9rem;
      }
 
-     /* responsive zoals filmoverzicht */
+     /* responsive zoals wonderoverzicht */
      @media screen and (max-width: 1023px) {
          #wonderen_container {
              grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));

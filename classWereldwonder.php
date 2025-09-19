@@ -36,15 +36,14 @@ class Wereldwonder extends  Database{
 
           $statement->execute();
 if ($statement->rowCount() > 0) {
-    header("Location: wonderBeheer.php");
-    exit();
+   return true;
 }
 
 
         }catch(PDOException $e){
         $error = $e->getMessage();
         
-            echo "Fout bij toevoegen wereldwonder: " . $e->getMessage();
+            echo "Fout bij toevoegen wereldwonder: " .    $error;
         }
 
         }
@@ -74,7 +73,7 @@ if ($statement->rowCount() > 0) {
             ':longitude' => $longitude
         ]);
 
-        // ✅ hier ID teruggeven
+        
         header("location: onderzoekerBeheer.php");
 
     } catch (PDOException $e) {
@@ -203,13 +202,13 @@ public function getWonderenDoorGebruiker($gebruikerId) {
          $statement = $this->pdo->prepare($query);
             $statement->execute(['id' => $wonderId]);
         
-        $film = $statement->fetch();
+        $wonder = $statement->fetch();
       
        
         // ik wil zeker weten if de wonderId bestaat in db of niet
         if($statement){
           
-            return $film;
+            return $wonder;
             
 
           
@@ -674,6 +673,28 @@ public function wonderUpdateArchivaris($wonderId, $bouwjaar, $bestaat_nog, $loca
         return false;
     }
 }
+
+
+// voor redacteur 
+public function getOngekeurdeWonderen() {
+    try {
+        $stmt = $this->pdo->query("SELECT * FROM wereldwonderen WHERE status_toevoeging = 0");
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    } catch (PDOException $e) {
+        return [];
+    }
+}
+
+
+public function updateStatus($wonderId, $status) {
+    $query = "UPDATE wereldwonderen SET status_toevoeging = :status WHERE wonder_id = :wonder_id";
+    $stmt = $this->pdo->prepare($query);
+    return $stmt->execute([':status' => $status, ':wonder_id' => $wonderId]);
+}
+
+
+
+
 
 
  }

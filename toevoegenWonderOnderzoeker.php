@@ -49,8 +49,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
                     if (move_uploaded_file($tmp_name, $target)) {
                         // Foto wordt toegevoegd door onderzoeker → standaard niet goedgekeurd (0)
-                        $foto->fotoToevoegen($wonderId, $target, 0); 
-                    }
+                          $bestandPad = $target;
+$foto->fotoToevoegenOnderzoeker($wonderId, $bestandPad, $toegevoegd_door);
+
+
+                              $message .= "<p style='color:green;'>✅ Foto succesvol toegevoegd! Wacht op goedkeuring door redacteur of beheerder.</p>";
+                    }else {
+        $message .= "<p style='color:red;'>❌ Fout bij uploaden van de foto.</p>";
+    }
                 }
             }
 

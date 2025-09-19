@@ -1,30 +1,26 @@
- 
 <!DOCTYPE html>
-<html lang="en">
- 
+<html lang="nl">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>wereldwonderen</title>
+    <title>Wereldwonder detail</title>
+
+    <!-- FontAwesome -->
     <script src="https://kit.fontawesome.com/0c7c27ff53.js" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="./css/stylesheet.css">
     <script src="../project-testomgeving/js/index.js" defer></script>
-    <!-- Leaflet CSS -->
-<link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
-<!-- Leaflet JS -->
-<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
 
- 
+    <!-- Leaflet CSS & JS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+
     <meta name="description"
-      content="Codex Mundi is een digitaal archief van de 21 wereldwonderen. Ontdek informatie, foto's, verhalen en geschiedenis van de klassieke, nieuwe en natuurlijke wereldwonderen.">
-<meta name="keywords"
-      content="wereldwonderen, 7 wereldwonderen, nieuwe wereldwonderen, klassieke wereldwonderen, geschiedenis, cultuur, Codex Mundi, digitaal archief, erfgoed">
- 
- 
- 
+        content="Codex Mundi is een digitaal archief van de 21 wereldwonderen. Ontdek informatie, foto's, verhalen en geschiedenis van de klassieke, nieuwe en natuurlijke wereldwonderen.">
+    <meta name="keywords"
+        content="wereldwonderen, 7 wereldwonderen, nieuwe wereldwonderen, klassieke wereldwonderen, geschiedenis, cultuur, Codex Mundi, digitaal archief, erfgoed">
     <meta name="author" content="A.Alhaji, G.Verpaalen">
- 
 </head>
+<body>
 <?php
 require_once "classWereldwonder.php";
 require_once "./includes/header.php";
@@ -41,10 +37,10 @@ if ($id <= 0) {
 // 2. Wereldwonder object maken
 $wereldwonderObj = new Wereldwonder();
 
-// 3. Info tonen van specifiek wonder
+// 3. Info tonen (inclusief foto's & documenten)
 $wereldwonderObj->toonInfoPerWonder($id);
-$wereldwonderObj->getWonderMetDetails($id);
-// wonder array zodat ik cooridinaten uit te halen voor kaart
+
+// 4. Voor kaart: losse array ophalen
 $wonder = $wereldwonderObj->getWonderMetDetails($id);
 
 if (!$wonder) {
@@ -52,22 +48,18 @@ if (!$wonder) {
     require_once "./includes/footer.php";
     exit;
 }
-
 ?>
 
-
-
-
+<!-- Kaart -->
 <div id="kaart" style="height: 400px; width: 100%; margin-top: 20px;"></div>
 
-<?php
-require_once "./includes/footer.php";
-?>
+<?php require_once "./includes/footer.php"; ?>
+
 <script>
 var lat = <?= $wonder['latitude'] ?? 0 ?>;
 var lng = <?= $wonder['longitude'] ?? 0 ?>;
 
-if(lat && lng){
+if (lat && lng) {
     var map = L.map('kaart').setView([lat, lng], 5);
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         attribution: '&copy; OpenStreetMap contributors'
@@ -81,7 +73,8 @@ if(lat && lng){
 }
 </script>
 
-<style>/* Container voor detailpagina */
+<style>
+/* Container voor detailpagina */
 #wonder_box {
     max-width: 1000px;
     margin: 40px auto;
@@ -116,19 +109,16 @@ if(lat && lng){
 /* Foto's sectie */
 .wonder_fotos {
     margin-top: 30px;
-}
-
-.wonder_fotos h2 {
-    font-size: 1.5rem;
-    margin-bottom: 15px;
-    color: #8C4A3A;
-}
-
-/* Foto grid */
-.wonder_fotos {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
     gap: 15px;
+}
+
+.wonder_fotos h2 {
+    grid-column: 1/-1;
+    font-size: 1.5rem;
+    margin-bottom: 15px;
+    color: #8C4A3A;
 }
 
 .wonder_fotos img {
@@ -193,3 +183,5 @@ if(lat && lng){
     }
 }
 </style>
+</body>
+</html>
