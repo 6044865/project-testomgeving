@@ -66,7 +66,7 @@ $wonderen = $ww->getAlleWonderen();
                     <h3><?= htmlspecialchars($w['naam']); ?></h3>
               
                     <div class="actions">
-                        <a href="wereldwonderaanpassen.php?id=<?= $w['wonder_id']; ?>" class="bewerken">✏️ Bewerken</a>
+                        <a href="bewerkWonder.php?id=<?= $w['wonder_id']; ?>" class="bewerken">✏️ Bewerken</a>
                     </div>
                 </div>
             <?php endforeach; ?>

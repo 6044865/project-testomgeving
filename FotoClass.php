@@ -8,52 +8,69 @@ class Foto extends Database {
 
 
 
-//     // Foto toevoegen
-    public function fotoToevoegen($wonderId, $bestandspad, $goedgekeurd = 0) {
+//     // Foto toevoegen onderzoeker
+ public function fotoToevoegenOnderzoeker($wonderId, $bestandspad, $gebruikerId) {
     try {
-        $query = "INSERT INTO " . $this->tableNaam . " (wonder_id, bestandspad, goedgekeurd) 
-                  VALUES (:wonder_id, :bestandspad, :goedgekeurd)";
-        $stmt = $this->pdo->prepare($query);
-        $result = $stmt->execute([
+        $stmt = $this->pdo->prepare("
+            INSERT INTO fotos (wonder_id, bestandspad, goedgekeurd, toegevoegd_door)
+            VALUES (:wonder_id, :bestandspad, 0, :toegevoegd_door)
+        ");
+        $stmt->execute([
             ':wonder_id' => $wonderId,
             ':bestandspad' => $bestandspad,
-            ':goedgekeurd' => $goedgekeurd
+            ':toegevoegd_door' => $gebruikerId
         ]);
 
-        // DEBUG
-        echo "<pre style='background:#f2f2f2;border:1px solid #ccc;padding:10px;'>";
-        echo "DEBUG: fotoToevoegen uitgevoerd voor wonder_id: $wonderId\n";
-        echo "Pad: $bestandspad, goedgekeurd: $goedgekeurd\n";
-        echo "Resultaat execute: "; var_dump($result);
-        echo "</pre>";
+        return true;
+    }catch (PDOException $e) {
+    $msg = addslashes($e->getMessage()); // escape quotes voor JS
+    echo "<script>alert('❌ Fout bij fotoToevoegenOnderzoeker: $msg');</script>";
+    return false;
+}
 
-        return $result;
+}
 
+// onderzoeker kan eigen toegevoegde fotos zien zelfs het is nog niet goedgekeurd en het is nog onzichtbaar voor publiek
+public function getFotosForOnderzoeker($wonderId, $gebruikerId) {
+    $stmt = $this->pdo->prepare("
+        SELECT * FROM fotos
+        WHERE wonder_id = :wonder_id
+        AND (goedgekeurd = 1 OR toegevoegd_door = :gebruiker_id)
+    ");
+    $stmt->execute([
+        ':wonder_id' => $wonderId,
+        ':gebruiker_id' => $gebruikerId
+    ]);
+    return $stmt->fetchAll(PDO::FETCH_ASSOC);
+}
+
+
+
+
+// ✅ Foto toevoegen door beheerder (automatisch goedgekeurd)
+   // Beheerder voegt foto toe
+  
+public function fotoToevoegenBeheerder($wonderId, $bestandspad, $gebruikerId) {
+    try {
+        $stmt = $this->pdo->prepare("
+            INSERT INTO fotos (wonder_id, bestandspad, goedgekeurd, toegevoegd_door)
+            VALUES (:wonder_id, :bestandspad, 1, :toegevoegd_door)
+        ");
+        $stmt->execute([
+            ':wonder_id' => $wonderId,
+            ':bestandspad' => $bestandspad,
+            ':toegevoegd_door' => $gebruikerId
+        ]);
+
+        return true; // ✅ altijd true bij succes
     } catch (PDOException $e) {
-        echo "<p style='color:red;'>❌ Fout bij foto toevoegen: " . $e->getMessage() . "</p>";
+        $msg = addslashes($e->getMessage());
+        echo "<script>alert('❌ Fout bij fotoToevoegenBeheerder: $msg');</script>";
         return false;
     }
 }
 
 
-
-// ✅ Foto toevoegen door beheerder (automatisch goedgekeurd)
-    public function fotoToevoegenBeheerder($wonderId, $bestandspad, $toegevoegd_door) {
-        try {
-            $query = "INSERT INTO " . $this->tableNaam . " 
-                      (wonder_id, bestandspad, goedgekeurd, toegevoegd_door) 
-                      VALUES (:wonder_id, :bestandspad, 1, :toegevoegd_door)";
-            $stmt = $this->pdo->prepare($query);
-            return $stmt->execute([
-                ':wonder_id' => $wonderId,
-                ':bestandspad' => $bestandspad,
-                ':toegevoegd_door' => $toegevoegd_door
-            ]);
-        } catch (PDOException $e) {
-            echo "<p style='color:red;'>❌ Fout bij foto toevoegen door beheerder: " . $e->getMessage() . "</p>";
-            return false;
-        }
-    }
 
     // Foto verwijderen
 public function fotoVerwijderen($fotoId) {
@@ -99,11 +116,45 @@ public function fotoVerwijderen($fotoId) {
         }
     }
 
+
+    
     // Alle foto's per wonder ophalen
-    public function getFotosPerWonder($wonderId) {
-        $query = "SELECT * FROM " . $this->tableNaam . " WHERE wonder_id = :id";
-        $stmt = $this->pdo->prepare($query);
+    // public function getFotosPerWonder($wonderId) {
+    //     $query = "SELECT * FROM " . $this->tableNaam . " WHERE wonder_id = :id";
+    //     $stmt = $this->pdo->prepare($query);
+    //     $stmt->execute([':id' => $wonderId]);
+    //     return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    // }
+        // Foto's ophalen bij een wereldwonder
+    public function getFotosByWonder($wonderId) {
+        $stmt = $this->pdo->prepare("
+            SELECT * FROM fotos 
+            WHERE wonder_id = :id AND goedgekeurd = 1
+        ");
         $stmt->execute([':id' => $wonderId]);
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
+
+
+// voor redacteur
+public function getOngekeurdeFotos() {
+    $stmt = $this->pdo->prepare("SELECT * FROM fotos WHERE goedgekeurd = 0 ");
+    $stmt->execute();
+    return $stmt->fetchAll(PDO::FETCH_ASSOC);
+}
+
+
+public function updateStatus($fotoId, $status) {
+    try {
+        $stmt = $this->pdo->prepare("UPDATE fotos SET goedgekeurd = :status WHERE foto_id = :id");
+        return $stmt->execute([
+            ':status' => $status,
+            ':id'     => $fotoId
+        ]);
+    } catch (PDOException $e) {
+        return false;
+    }
+}
+
+    
 }

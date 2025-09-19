@@ -117,11 +117,9 @@ $naam = $_SESSION['username'] ?? 'Gast';
             
             <div class="card">
              
-                <a href="">✅ Aanpassingen goedkeuren</a></div>
-                  <div class="card">
-                <a href="">🔔 Meldingen van wijzigingen</a></div>
-                  <div class="card">
-                <a href="">🏷️ Tags toevoegen</a>
+                <a href="redacteurGoedkeuren.php">🔔/ik wil hier aantal meldingen per nog niet gekurde wijziginen hier getoond wordt/ Meldingen van wijzigingen en  Aanpassingen goedkeure</a></div>
+                        <div class="card">
+                <a href="">Tags en locatie controleren</a>
             </div>
         <?php endif; ?>
 
