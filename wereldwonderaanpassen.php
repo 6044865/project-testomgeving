@@ -37,7 +37,7 @@ try {
 // rechten per rol
 $rechten = [
     "onderzoeker" => ["naam", "beschrijving"],
-    "archivaris"   => ["bouwjaar", "bestaat_nog", "status", "tags"],
+    "archivaris"   => ["bouwjaar", "bestaat_nog", "status", "tags", "locatie","latitude","longitude"],
     "beheerder"   => ["naam","beschrijving","bouwjaar","bestaat_nog","status","tags","wereldeel","locatie","latitude","longitude"]
 ];
 
