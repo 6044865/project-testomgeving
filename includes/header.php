@@ -28,7 +28,7 @@ $naam = $_SESSION['username'] ?? null;
 
 
         <?php if (in_array($rol, ["onderzoeker","redacteur","archivaris","beheerder"])): ?>
-            <a href="dashboard.php" class="nav_item">Dashobard</a>
+            <a href="dashboard.php" class="nav_item">Dashboard</a>
             
         <?php endif; ?>
 
