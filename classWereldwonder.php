@@ -693,6 +693,37 @@ public function updateStatus($wonderId, $status) {
 }
 
 
+// redacteur tags en locatie geven per wonder 
+public function updateWonderRedacteur($wonderId, $locatie, $tags) {
+    try {
+        $query = "UPDATE wereldwonderen 
+                  SET 
+                   
+                      locatie = :locatie, 
+                      tags = :tags";
+
+        
+
+        $query .= " WHERE wonder_id = :id";
+
+        $stmt = $this->pdo->prepare($query);
+        $params = [
+        
+            ':locatie' => $locatie,
+            ':tags' => $tags,
+            ':id' => $wonderId
+        ];
+
+       
+
+        return $stmt->execute($params);
+
+    } catch (PDOException $e) {
+        return false;
+    }
+}
+
+
 
 
 

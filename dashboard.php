@@ -119,7 +119,7 @@ $naam = $_SESSION['username'] ?? 'Gast';
              
                 <a href="redacteurGoedkeuren.php">🔔/ik wil hier aantal meldingen per nog niet gekurde wijziginen hier getoond wordt/ Meldingen van wijzigingen en  Aanpassingen goedkeure</a></div>
                         <div class="card">
-                <a href="">Tags en locatie controleren</a>
+                <a href="redaceurWonderLijst.php">Tags en locatie controleren</a>
             </div>
         <?php endif; ?>
 

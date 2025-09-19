@@ -29,7 +29,7 @@ $maxGrootteDoc = 5 * 1024 * 1024; // 5MB
 // ================================
 // Verwijder foto
 // ================================
-if (isset($_POST['delete_foto_id'])) {
+if ($rol === 'beheerder' && isset($_POST['delete_foto_id'])) {
     $fotoId = (int)$_POST['delete_foto_id'];
     if ($foto->fotoVerwijderen($fotoId)) {
         $message .= "<p style='color:green;'>✅ Foto verwijderd!</p>";
@@ -43,7 +43,7 @@ if (isset($_POST['delete_foto_id'])) {
 // Verwijder document
 // ================================
 
-if (isset($_POST['delete_document_id'])) {
+if ($rol === 'beheerder' && isset($_POST['delete_document_id'])) {
     $docId = (int)$_POST['delete_document_id'];
 
     if ($doc->documentVerwijderen($docId)) {
@@ -93,7 +93,7 @@ if (isset($_POST['submit_form'])) {
     // ================================
     // Foto upload
     // ================================
-    if (isset($_FILES['foto']) && $_FILES['foto']['error'] === UPLOAD_ERR_OK) {
+    if ($rol === 'beheerder' && isset($_FILES['foto']) && $_FILES['foto']['error'] === UPLOAD_ERR_OK) {
         $bestand = $_FILES['foto'];
         $uploadDir = "uploads/fotos/";
         if (!is_dir($uploadDir)) mkdir($uploadDir, 0777, true);
@@ -217,9 +217,11 @@ $fotos = $foto->getFotosByWonder($wonderId);
     <input type="text" name="longitude" value="<?= htmlspecialchars($selectedWonder['longitude'] ?? '') ?>">
 
     <hr>
+    <?php if ($rol === 'beheerder'): ?>
     <h2>Foto toevoegen</h2>
     <input type="file" name="foto">
     <p>Max. bestandsgrootte: <?= ($maxGrootteDoc/1024/1024) ?> MB</p>
+    <?php endif; ?>
 
     <h2>Document toevoegen</h2>
     <input type="file" name="document">
@@ -235,10 +237,12 @@ $fotos = $foto->getFotosByWonder($wonderId);
     <?php foreach ($fotos as $f): ?>
         <li>
             <img src="<?= htmlspecialchars($f['bestandspad']) ?>" alt="" style="max-width:100px;">
+            <?php if ($rol === 'beheerder'): ?>
            <form method="post" style="display:inline;" onsubmit="return confirm('Weet je zeker dat je deze foto wilt verwijderen?');">
     <input type="hidden" name="delete_foto_id" value="<?= $f['foto_id'] ?>">
     <button type="submit">🗑️ Verwijder</button>
 </form>
+<?php endif; ?>
         </li>
     <?php endforeach; ?>
     </ul>
@@ -255,11 +259,13 @@ $fotos = $foto->getFotosByWonder($wonderId);
             <a href="<?= htmlspecialchars($d['bestandspad']) ?>" target="_blank">
                 <?= htmlspecialchars(basename($d['bestandspad'])) ?> (<?= htmlspecialchars($d['type']) ?>)
             </a>
+            <?php if ($rol === 'beheerder'): ?>
            <form method="post" style="display:inline;" onsubmit="return confirm('Weet je zeker dat je dit document wilt verwijderen?');">
 
                 <input type="hidden" name="delete_document_id" value="<?= $d['document_id'] ?>">
                 <button type="submit">🗑️ Verwijder</button>
             </form>
+            <?php endif; ?>
         </li>
     <?php endforeach; ?>
     </ul>
